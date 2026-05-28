@@ -1,0 +1,53 @@
+{
+  "nav": {
+    "home": "Главная",
+    "dashboard": "Мой кабинет",
+    "admin": "Панель администратора",
+    "logout": "Выйти"
+  },
+  "auth": {
+    "login": "Войти",
+    "username": "Логин",
+    "password": "Пароль",
+    "title": "Вход в систему"
+  },
+  "stage": {
+    "D": "Define — Определение",
+    "M_A": "Measure & Analyze — Измерение и Анализ",
+    "I": "Improve — Улучшение",
+    "C": "Control — Контроль",
+    "save": "Сохранить черновик",
+    "submit": "Отправить на проверку",
+    "status": {
+      "DRAFT": "Черновик",
+      "SUBMITTED": "На проверке",
+      "APPROVED": "Одобрен",
+      "REJECTED": "Отклонён"
+    },
+    "deadline": "Дедлайн"
+  },
+  "barrel": {
+    "label": "Барреля",
+    "total": "Итого баррелей",
+    "reward": {
+      "JAPAN_TRIP": "Стажировка в Японии",
+      "LEADERSHIP_AWARD": "Награждение от руководства",
+      "BRANDED_MERCH": "Имиджевая продукция",
+      "PROJECT_BADGE": "Значок проекта"
+    }
+  },
+  "leaderboard": {
+    "title": "Рейтинг участников",
+    "rank": "Место",
+    "participant": "Участник",
+    "barrels": "Баррели",
+    "reward": "Награда"
+  },
+  "admin": {
+    "createUser": "Создать участника",
+    "review": "Проверить",
+    "score": "Оценка (%)",
+    "comment": "Комментарий",
+    "approve": "Подтвердить оценку"
+  }
+}

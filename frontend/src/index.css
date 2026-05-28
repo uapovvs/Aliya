@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Inter + major-second type scale */
+  --font-sans: 'Inter', system-ui, sans-serif;
+
+  --text-xs:   0.79rem;
+  --text-sm:   0.889rem;
+  --text-base: 1rem;
+  --text-lg:   1.125rem;
+  --text-xl:   1.266rem;
+  --text-2xl:  1.424rem;
+  --text-3xl:  1.602rem;
+  --text-4xl:  1.802rem;
+
+  --lh-body:    1.5;
+  --lh-heading: 1.15;
+
+  --color-kmg:       #003D7A;
+  --color-kmg-light: #0059B2;
+  --color-barrel:    #D4A017;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    line-height: var(--lh-body);
+    color: #1a1a2e;
+    background-color: #f8fafc;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1 { font-size: var(--text-4xl); line-height: var(--lh-heading); font-weight: 700; letter-spacing: -0.025em; }
+  h2 { font-size: var(--text-3xl); line-height: 1.2;  font-weight: 600; letter-spacing: -0.02em;  }
+  h3 { font-size: var(--text-2xl); line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; }
+  h4 { font-size: var(--text-xl);  line-height: 1.35; font-weight: 500; }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-kmg text-white px-4 py-2 rounded-lg font-medium text-sm
+           hover:bg-kmg-light transition-colors focus:outline-none focus:ring-2 focus:ring-kmg focus:ring-offset-2;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm p-6;
+  }
+
+  .barrel-icon {
+    @apply inline-flex items-center justify-center w-8 h-8 rounded-full
+           bg-amber-100 text-amber-700 font-bold text-sm;
+  }
+}

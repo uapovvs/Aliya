@@ -1,0 +1,53 @@
+{
+  "nav": {
+    "home": "Басты бет",
+    "dashboard": "Менің кабинетім",
+    "admin": "Әкімші панелі",
+    "logout": "Шығу"
+  },
+  "auth": {
+    "login": "Кіру",
+    "username": "Логин",
+    "password": "Құпия сөз",
+    "title": "Жүйеге кіру"
+  },
+  "stage": {
+    "D": "Define — Анықтау",
+    "M_A": "Measure & Analyze — Өлшеу және Талдау",
+    "I": "Improve — Жақсарту",
+    "C": "Control — Бақылау",
+    "save": "Жобаны сақтау",
+    "submit": "Тексеруге жіберу",
+    "status": {
+      "DRAFT": "Жоба",
+      "SUBMITTED": "Тексеруде",
+      "APPROVED": "Бекітілді",
+      "REJECTED": "Қабылданбады"
+    },
+    "deadline": "Мерзімі"
+  },
+  "barrel": {
+    "label": "Баррель",
+    "total": "Жиынтық барреліктер",
+    "reward": {
+      "JAPAN_TRIP": "Жапонияға тағылымдама",
+      "LEADERSHIP_AWARD": "Басшылық марапаты",
+      "BRANDED_MERCH": "Имиджді өнімдер",
+      "PROJECT_BADGE": "Жоба белгісі"
+    }
+  },
+  "leaderboard": {
+    "title": "Қатысушылар рейтингі",
+    "rank": "Орын",
+    "participant": "Қатысушы",
+    "barrels": "Барреліктер",
+    "reward": "Марапат"
+  },
+  "admin": {
+    "createUser": "Қатысушы жасау",
+    "review": "Тексеру",
+    "score": "Баға (%)",
+    "comment": "Пікір",
+    "approve": "Бағаны растау"
+  }
+}
