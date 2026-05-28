@@ -1,6 +1,8 @@
 import { useState, type FormEvent } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { motion } from 'motion/react'
+import { User, Lock, ArrowRight, SpinnerGap } from '@phosphor-icons/react'
 import { login } from '@/api/auth'
 import { useAuthStore } from '@/store/authStore'
 import type { Role } from '@/types'
@@ -32,63 +34,91 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen bg-canvas flex flex-col items-center justify-center p-6">
-      {/* Ambient glow — taste-skill subtle depth */}
+      {/* Ambient glow */}
       <div
         className="fixed inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse 60% 40% at 50% 0%, rgba(94,106,210,0.06) 0%, transparent 70%)',
-        }}
+        style={{ background: 'radial-gradient(ellipse 60% 40% at 50% -5%, rgba(94,106,210,0.07) 0%, transparent 70%)' }}
       />
 
-      <div className="w-full max-w-sm relative">
-        {/* Logo */}
+      <motion.div
+        className="w-full max-w-sm relative"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      >
         <div className="text-center mb-10">
-          <img src="/KazMunayGas_logo.svg" alt="KMG" className="h-8 mx-auto brightness-0 invert opacity-80 mb-6" />
+          <motion.img
+            src="/KazMunayGas_logo.svg"
+            alt="KMG"
+            className="h-9 mx-auto brightness-0 invert opacity-80 mb-6"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 0.8, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+          />
           <h1 className="text-headline text-ink mb-1">{t('auth.title')}</h1>
           <p className="text-caption text-ink-tertiary">DMAIC Platform · КазМунайГаз</p>
         </div>
 
-        {/* Form */}
         <form onSubmit={handleSubmit} className="card space-y-4">
+          {/* Username */}
           <div>
             <label className="block text-caption text-ink-subtle mb-1.5">{t('auth.username')}</label>
-            <input
-              type="text"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              className="input"
-              required
-              autoComplete="username"
-              autoFocus
-            />
+            <div className="relative">
+              <User size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-tertiary" />
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="input pl-8"
+                required
+                autoComplete="username"
+                autoFocus
+              />
+            </div>
           </div>
+
+          {/* Password */}
           <div>
             <label className="block text-caption text-ink-subtle mb-1.5">{t('auth.password')}</label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="input"
-              required
-              autoComplete="current-password"
-            />
+            <div className="relative">
+              <Lock size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-ink-tertiary" />
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="input pl-8"
+                required
+                autoComplete="current-password"
+              />
+            </div>
           </div>
 
           {error && (
-            <p className="text-caption text-danger border border-danger/20 bg-danger/5 rounded-md px-3 py-2">
+            <motion.p
+              className="text-caption text-danger border border-danger/20 bg-danger/5 rounded-md px-3 py-2"
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: 'auto' }}
+            >
               {error}
-            </p>
+            </motion.p>
           )}
 
-          <button
+          <motion.button
             type="submit"
             disabled={loading}
-            className="btn-primary w-full justify-center mt-2"
+            className="btn-primary w-full justify-center gap-2 mt-1"
+            whileHover={{ scale: 1.01 }}
+            whileTap={{ scale: 0.98 }}
           >
             {loading ? (
-              <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-            ) : t('auth.login')}
-          </button>
+              <SpinnerGap size={15} className="animate-spin" />
+            ) : (
+              <>
+                {t('auth.login')}
+                <ArrowRight size={14} />
+              </>
+            )}
+          </motion.button>
         </form>
 
         <div className="mt-6 text-center">
@@ -96,7 +126,7 @@ export default function LoginPage() {
             ← {t('nav.home')}
           </Link>
         </div>
-      </div>
+      </motion.div>
     </div>
   )
 }

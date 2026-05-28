@@ -1,21 +1,24 @@
 import { useTranslation } from 'react-i18next'
+import { motion } from 'motion/react'
+import { AirplaneTilt, Trophy, Bag, Bookmark, User } from '@phosphor-icons/react'
 import type { LeaderboardEntry } from '@/types'
 
 interface Props { entries: LeaderboardEntry[] }
 
-const REWARD_ICON: Record<string, string> = {
-  JAPAN_TRIP:       '✈',
-  LEADERSHIP_AWARD: '🏆',
-  BRANDED_MERCH:    '🎒',
-  PROJECT_BADGE:    '🔖',
+const REWARD_ICON: Record<string, React.ReactNode> = {
+  JAPAN_TRIP:       <AirplaneTilt weight="fill" size={13} className="text-barrel" />,
+  LEADERSHIP_AWARD: <Trophy weight="fill" size={13} className="text-accent" />,
+  BRANDED_MERCH:    <Bag weight="fill" size={13} className="text-success" />,
+  PROJECT_BADGE:    <Bookmark weight="fill" size={13} className="text-ink-subtle" />,
 }
+
+const RANK_STYLE = ['text-barrel', 'text-ink-muted', 'text-ink-subtle']
 
 export default function Leaderboard({ entries }: Props) {
   const { t } = useTranslation()
 
   return (
-    <div className="card-panel overflow-hidden p-0 animate-in">
-      {/* Header */}
+    <div className="card-panel overflow-hidden p-0">
       <div className="px-6 py-4 border-b border-hl flex items-center justify-between">
         <div>
           <p className="eyebrow mb-0.5">{t('leaderboard.title')}</p>
@@ -23,7 +26,6 @@ export default function Leaderboard({ entries }: Props) {
         </div>
       </div>
 
-      {/* Table */}
       {entries.length === 0 ? (
         <div className="px-6 py-16 text-center text-ink-tertiary text-body">
           Нет данных
@@ -40,14 +42,16 @@ export default function Leaderboard({ entries }: Props) {
           </thead>
           <tbody className="divide-y divide-hl">
             {entries.map((entry, i) => (
-              <tr
+              <motion.tr
                 key={entry.userId}
-                className="group hover:bg-s2 transition-colors duration-100"
-                style={{ animationDelay: `${i * 40}ms` }}
+                className="hover:bg-s2 transition-colors duration-100"
+                initial={{ opacity: 0, x: -8 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1], delay: i * 0.04 }}
               >
                 <td className="px-6 py-4">
-                  <span className="text-body font-medium text-ink-tertiary">
-                    {i < 3 ? ['01', '02', '03'][i] : String(i + 1).padStart(2, '0')}
+                  <span className={`text-body font-semibold ${RANK_STYLE[i] ?? 'text-ink-tertiary'}`}>
+                    {String(i + 1).padStart(2, '0')}
                   </span>
                 </td>
                 <td className="px-6 py-4">
@@ -55,8 +59,8 @@ export default function Leaderboard({ entries }: Props) {
                     {entry.avatarUrl ? (
                       <img src={entry.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover border border-hl" />
                     ) : (
-                      <div className="w-8 h-8 rounded-full bg-s3 border border-hl flex items-center justify-center text-caption font-semibold text-ink-subtle select-none">
-                        {entry.fullName.charAt(0).toUpperCase()}
+                      <div className="w-8 h-8 rounded-full bg-s3 border border-hl flex items-center justify-center">
+                        <User size={14} className="text-ink-subtle" />
                       </div>
                     )}
                     <div>
@@ -69,18 +73,21 @@ export default function Leaderboard({ entries }: Props) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex justify-center">
-                    <span className={`barrel ${entry.totalBarrels === 0 ? 'opacity-30' : ''}`}>
+                    <motion.span
+                      className={`barrel ${entry.totalBarrels === 0 ? 'opacity-25' : ''}`}
+                      whileHover={{ scale: 1.1 }}
+                    >
                       {entry.totalBarrels}
-                    </span>
+                    </motion.span>
                   </div>
                 </td>
                 <td className="px-6 py-4 hidden md:table-cell">
                   <div className="flex items-center gap-2">
-                    <span className="text-body">{REWARD_ICON[entry.reward]}</span>
+                    {REWARD_ICON[entry.reward]}
                     <span className="text-caption text-ink-subtle">{t(`barrel.reward.${entry.reward}`)}</span>
                   </div>
                 </td>
-              </tr>
+              </motion.tr>
             ))}
           </tbody>
         </table>

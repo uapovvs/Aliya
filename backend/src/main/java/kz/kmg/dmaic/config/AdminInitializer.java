@@ -18,10 +18,10 @@ public class AdminInitializer {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    @Value("${app.admin.username:admin}")
+    @Value("${ADMIN_USERNAME:admin}")
     private String adminUsername;
 
-    @Value("${app.admin.password:}")
+    @Value("${ADMIN_PASSWORD:}")
     private String adminPassword;
 
     @PostConstruct

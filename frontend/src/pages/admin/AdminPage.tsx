@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
+import { motion, AnimatePresence } from 'motion/react'
+import { Plus, ArrowRight, User, SpinnerGap } from '@phosphor-icons/react'
 import Layout from '@/components/Layout'
 import { getAllUsers, createUser } from '@/api/admin'
 import type { UserProfile } from '@/types'
@@ -31,70 +33,80 @@ export default function AdminPage() {
     }
   }
 
-  const FIELD_LABELS: Record<keyof typeof form, string> = {
-    fullName: 'Полное имя',
-    username: 'Логин',
-    password: 'Пароль',
+  const LABELS: Record<keyof typeof form, string> = {
+    fullName: 'Полное имя *',
+    username: 'Логин *',
+    password: 'Пароль *',
     position: 'Должность',
   }
 
   return (
     <Layout>
-      {/* Header */}
-      <div className="flex items-center justify-between mb-8 pb-6 border-b border-hl animate-in">
+      <motion.div
+        className="flex items-center justify-between mb-8 pb-6 border-b border-hl"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4 }}
+      >
         <div>
           <p className="eyebrow mb-1">{t('nav.admin')}</p>
           <h1 className="text-headline text-ink">{users.length} участников</h1>
         </div>
-        <button onClick={() => setShowForm((v) => !v)} className="btn-primary">
-          {showForm ? 'Отмена' : `+ ${t('admin.createUser')}`}
-        </button>
-      </div>
+        <motion.button
+          onClick={() => setShowForm((v) => !v)}
+          className="btn-primary flex items-center gap-2"
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.97 }}
+        >
+          <Plus size={14} />
+          {showForm ? 'Отмена' : t('admin.createUser')}
+        </motion.button>
+      </motion.div>
 
       {/* Create form */}
-      {showForm && (
-        <form
-          onSubmit={handleCreate}
-          className="card mb-8 max-w-md animate-in"
-        >
-          <p className="text-card-title text-ink mb-5">{t('admin.createUser')}</p>
-          <div className="space-y-4">
-            {(Object.keys(form) as (keyof typeof form)[]).map((key) => (
-              <div key={key}>
-                <label className="block text-caption text-ink-subtle mb-1.5">
-                  {FIELD_LABELS[key]}
-                  {key !== 'position' && <span className="text-danger ml-0.5">*</span>}
-                </label>
-                <input
-                  type={key === 'password' ? 'password' : 'text'}
-                  value={form[key]}
-                  onChange={(e) => setForm((p) => ({ ...p, [key]: e.target.value }))}
-                  className="input"
-                  required={key !== 'position'}
-                />
-              </div>
-            ))}
-          </div>
-          {error && (
-            <p className="mt-3 text-caption text-danger border border-danger/20 bg-danger/5 rounded-md px-3 py-2">
-              {error}
-            </p>
-          )}
-          <div className="flex gap-3 mt-5 pt-5 border-t border-hl">
-            <button type="submit" disabled={creating} className="btn-primary">
-              {creating ? (
-                <span className="inline-block w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              ) : 'Создать'}
-            </button>
-            <button type="button" onClick={() => setShowForm(false)} className="btn-ghost">
-              Отмена
-            </button>
-          </div>
-        </form>
-      )}
+      <AnimatePresence>
+        {showForm && (
+          <motion.form
+            onSubmit={handleCreate}
+            className="card mb-8 max-w-md"
+            initial={{ opacity: 0, height: 0, y: -8 }}
+            animate={{ opacity: 1, height: 'auto', y: 0 }}
+            exit={{ opacity: 0, height: 0, y: -8 }}
+            transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <p className="text-card-title text-ink mb-5">{t('admin.createUser')}</p>
+            <div className="space-y-4">
+              {(Object.keys(form) as (keyof typeof form)[]).map((key) => (
+                <div key={key}>
+                  <label className="block text-caption text-ink-subtle mb-1.5">{LABELS[key]}</label>
+                  <input
+                    type={key === 'password' ? 'password' : 'text'}
+                    value={form[key]}
+                    onChange={(e) => setForm((p) => ({ ...p, [key]: e.target.value }))}
+                    className="input"
+                    required={key !== 'position'}
+                  />
+                </div>
+              ))}
+            </div>
+            {error && <p className="mt-3 text-caption text-danger">{error}</p>}
+            <div className="flex gap-3 mt-5 pt-5 border-t border-hl">
+              <button type="submit" disabled={creating} className="btn-primary flex items-center gap-2">
+                {creating ? <SpinnerGap size={14} className="animate-spin" /> : 'Создать'}
+              </button>
+              <button type="button" onClick={() => setShowForm(false)} className="btn-ghost">Отмена</button>
+            </div>
+          </motion.form>
+        )}
+      </AnimatePresence>
 
       {/* Users table */}
-      <div className="card-panel overflow-hidden p-0 animate-in">
+      <motion.div
+        className="card-panel overflow-hidden p-0"
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, delay: 0.1 }}
+      >
         {users.length === 0 ? (
           <div className="py-16 text-center text-ink-tertiary text-body">
             Нет участников. Создайте первого.
@@ -110,15 +122,21 @@ export default function AdminPage() {
               </tr>
             </thead>
             <tbody className="divide-y divide-hl">
-              {users.map((u) => (
-                <tr key={u.id} className="hover:bg-s2 transition-colors">
+              {users.map((u, i) => (
+                <motion.tr
+                  key={u.id}
+                  className="hover:bg-s2 transition-colors"
+                  initial={{ opacity: 0, x: -8 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.04 }}
+                >
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-3">
                       {u.avatarUrl ? (
                         <img src={u.avatarUrl} alt="" className="w-8 h-8 rounded-full object-cover border border-hl" />
                       ) : (
-                        <div className="w-8 h-8 rounded-full bg-s3 border border-hl flex items-center justify-center text-caption font-semibold text-ink-subtle">
-                          {u.fullName.charAt(0)}
+                        <div className="w-8 h-8 rounded-full bg-s3 border border-hl flex items-center justify-center">
+                          <User size={14} className="text-ink-subtle" />
                         </div>
                       )}
                       <span className="text-body font-medium text-ink">{u.fullName}</span>
@@ -131,16 +149,17 @@ export default function AdminPage() {
                     {u.position ?? '—'}
                   </td>
                   <td className="px-6 py-4 text-right">
-                    <Link to={`/admin/review/${u.id}`} className="btn-secondary text-caption">
-                      {t('admin.review')}
+                    <Link to={`/admin/review/${u.id}`} className="btn-secondary text-caption flex items-center gap-1.5 ml-auto w-fit">
+                      {t('admin.review')} <ArrowRight size={12} />
                     </Link>
                   </td>
-                </tr>
+                </motion.tr>
               ))}
             </tbody>
           </table>
         )}
-      </div>
+      </motion.div>
     </Layout>
   )
 }
+
