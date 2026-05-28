@@ -113,10 +113,29 @@ React Router v6. Protected routes check `authStore` role:
 | I (Improve) | 30.11.2026 |
 | C (Control) | 20.12.2026 (flexible, participant sets own date) |
 
+## Environment variables
+
+Copy `.env.example` to `.env` before starting. Required vars:
+
+| Variable | Purpose |
+|---|---|
+| `JWT_SECRET` | HMAC-SHA signing key — min 32 chars, no default |
+| `DB_PASSWORD` | PostgreSQL password |
+| `ADMIN_USERNAME` | Admin login created on first startup |
+| `ADMIN_PASSWORD` | Admin password created on first startup |
+
+`JWT_SECRET` has **no fallback** — the app refuses to start without it (enforced in `JwtService`).
+
+Admin account is created by `AdminInitializer` on startup if the username doesn't exist yet. No hardcoded credentials in migrations.
+
 ## Docker
 
 ```bash
-docker-compose up -d   # starts PostgreSQL on port 5432
+docker-compose up -d   # starts PostgreSQL (5432) + MinIO (9000/9001)
 ```
 
-PostgreSQL credentials are in `docker-compose.yml` and mirrored in `backend/src/main/resources/application.yml`.
+PostgreSQL and MinIO credentials are read from the `.env` file via `docker-compose.yml`.
+
+## File uploads
+
+Avatar uploads are restricted to `image/jpeg`, `image/png`, `image/webp` ≤ 5 MB. Original filenames are discarded; a UUID-based safe name is generated in `StorageService`.

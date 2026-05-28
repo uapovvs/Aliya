@@ -21,7 +21,7 @@ server:
 
 app:
   jwt:
-    secret: ${JWT_SECRET:dev-secret-change-in-production-must-be-256-bits}
+    secret: ${JWT_SECRET}
     expiration-ms: ${JWT_EXPIRATION_MS:86400000}
   minio:
     endpoint: http://localhost:9000

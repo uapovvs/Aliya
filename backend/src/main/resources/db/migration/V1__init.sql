@@ -36,6 +36,5 @@ CREATE TABLE dmaic_stages (
     UNIQUE (project_id, stage)
 );
 
--- Seed admin account (password: Admin123!)
-INSERT INTO users (username, password_hash, full_name, role)
-VALUES ('admin', '$2a$12$dT2ULcpNfQqMmVFxl5g3guFzjriU1kIUMWr6D3VwFJk23cVzW0UWG', 'Администратор', 'ADMIN');
+-- Admin account is created at startup by AdminInitializer if none exists.
+-- Set ADMIN_USERNAME and ADMIN_PASSWORD environment variables before first launch.
