@@ -1,33 +1,24 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useTranslation } from 'react-i18next'
+import { useTranslation, Trans } from 'react-i18next'
 import { motion } from 'motion/react'
-import { ArrowRight, Cylinder, Flag, ChartBar, Lightning, CheckCircle } from '@phosphor-icons/react'
+import { ArrowRight } from '@phosphor-icons/react'
 import Layout from '@/components/Layout'
 import Leaderboard from '@/components/Leaderboard'
+import DMAICTimeline from '@/components/DMAICTimeline'
+import { ContainerScroll } from '@/components/ui/container-scroll-animation'
+import { HeroCanvas } from '@/components/ui/hero-canvas'
 import { getLeaderboard } from '@/api/leaderboard'
 import { useAuthStore } from '@/store/authStore'
+import { useThemeStore } from '@/store/themeStore'
 import type { LeaderboardEntry } from '@/types'
 
-const STAGES = [
-  { key: 'D',   label: 'Define',          sub: 'Определение проблемы',      deadline: '30.06.2026', icon: <Flag weight="regular" size={16} /> },
-  { key: 'M/A', label: 'Measure+Analyze', sub: 'Измерение и анализ данных', deadline: '30.08.2026', icon: <ChartBar weight="regular" size={16} /> },
-  { key: 'I',   label: 'Improve',         sub: 'Оптимизация процесса',       deadline: '30.11.2026', icon: <Lightning weight="regular" size={16} /> },
-  { key: 'C',   label: 'Control',         sub: 'Контроль результатов',       deadline: '20.12.2026', icon: <CheckCircle weight="regular" size={16} /> },
-]
-
-const container = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.07 } },
-}
-const item = {
-  hidden: { opacity: 0, y: 12 },
-  show:   { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.16, 1, 0.3, 1] } },
-}
+const ease = [0.32, 0.72, 0, 1] as const
 
 export default function HomePage() {
   const { t } = useTranslation()
   const { role } = useAuthStore()
+  const { theme } = useThemeStore()
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -35,104 +26,131 @@ export default function HomePage() {
     getLeaderboard().then(setEntries).finally(() => setLoading(false))
   }, [])
 
+  const cta = !role
+    ? { to: '/login', label: t('home.cta_login') }
+    : role === 'PARTICIPANT'
+      ? { to: '/dashboard', label: t('home.cta_dashboard') }
+      : { to: '/admin', label: t('home.cta_admin') }
+
   return (
     <Layout>
-      <div
-        className="fixed inset-0 pointer-events-none -z-0"
-        style={{ background: 'radial-gradient(ellipse 80% 30% at 50% -10%, rgba(94,106,210,0.05) 0%, transparent 70%)' }}
-      />
-
-      <div className="relative">
-        {/* Hero */}
+      {/* ── Hero ──────────────────────────────────────────────────── */}
+      <section className="pt-12 pb-16 md:pt-20 md:pb-24" style={{ position: 'relative' }}>
+        <HeroCanvas />
         <motion.div
-          className="pt-6 pb-14"
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          initial={{ opacity: 0, y: 24, filter: 'blur(8px)' }}
+          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          transition={{ duration: 0.75, ease }}
         >
-          <p className="eyebrow mb-4 flex items-center gap-1.5">
-            <Cylinder weight="regular" size={11} />
-            КазМунайГаз · DMAIC Platform
-          </p>
-          <h1 className="text-display text-ink mb-4 max-w-xl">
-            Программа непрерывного совершенствования
-          </h1>
-          <p className="text-body-lg text-ink-subtle max-w-lg mb-8">
-            Участники проходят 4 этапа DMAIC, получают баррели за каждый шаг
-            и соревнуются за награды от председателя правления.
-          </p>
-          <div className="flex items-center gap-3">
-            {!role ? (
-              <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-                <Link to="/login" className="btn-primary flex items-center gap-2">
-                  Войти в платформу <ArrowRight size={14} />
-                </Link>
-              </motion.div>
-            ) : role === 'PARTICIPANT' ? (
-              <Link to="/dashboard" className="btn-primary flex items-center gap-2">
-                Мой кабинет <ArrowRight size={14} />
-              </Link>
-            ) : (
-              <Link to="/admin" className="btn-primary flex items-center gap-2">
-                Панель администратора <ArrowRight size={14} />
-              </Link>
-            )}
-            <span className="text-caption text-ink-tertiary">Старт: 18 мая 2026</span>
-          </div>
-        </motion.div>
-
-        {/* DMAIC stages */}
-        <motion.div
-          className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-14"
-          variants={container}
-          initial="hidden"
-          animate="show"
-        >
-          {STAGES.map((s) => (
-            <motion.div
-              key={s.key}
-              variants={item}
-              className="card hover:bg-s2 hover:border-hl-strong transition-colors cursor-default"
-              whileHover={{ y: -2 }}
-            >
-              <div className="w-8 h-8 rounded-md bg-s3 border border-hl flex items-center justify-center mb-3 text-ink-subtle">
-                {s.icon}
-              </div>
-              <p className="text-body font-semibold text-ink mb-0.5">{s.label}</p>
-              <p className="text-caption text-ink-subtle mb-3 leading-snug">{s.sub}</p>
-              <p className="text-caption text-ink-tertiary">{s.deadline}</p>
-            </motion.div>
-          ))}
-        </motion.div>
-
-        {/* Leaderboard */}
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.35 }}
-        >
-          <div className="flex items-center justify-between mb-5">
-            <h2 className="text-headline text-ink">{t('leaderboard.title')}</h2>
-            <div className="flex items-center gap-1.5 text-caption text-ink-tertiary">
-              <Cylinder weight="regular" size={12} />
-              <span>до 20 баррелей</span>
+          {/* Logo + DMAIC Platform label */}
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px', marginBottom: '32px', marginLeft: '-0px' }}>
+            <img
+              src="/KazMunayGas_logo.svg"
+              alt="KazMunayGas"
+              style={{
+                height: '100px', width: 'auto',
+                filter: theme === 'dark' ? 'brightness(0) invert(1)' : 'none',
+                opacity: theme === 'dark' ? 0.9 : 1,
+                transition: 'filter 0.3s ease',
+              }}
+            />
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+              <span style={{ width: '6px', height: '6px', borderRadius: '9999px', background: 'var(--accent)', animation: 'pulse 2s infinite' }} />
+              <span className="eyebrow" style={{ color: 'var(--ink-subtle)' }}>DMAIC Platform</span>
             </div>
           </div>
 
+          <h1 style={{
+            fontSize: 'clamp(2.8rem, 7vw, 5.5rem)',
+            fontWeight: 800, lineHeight: 1.04,
+            letterSpacing: '-0.045em', color: 'var(--ink)',
+            marginBottom: '20px', maxWidth: '700px',
+          }}>
+            <Trans
+              i18nKey="home.hero_title"
+              components={{ br: <br />, accent: <span style={{ color: 'var(--accent)' }} /> }}
+            />
+          </h1>
+
+          <p style={{ fontSize: '1.0625rem', color: 'var(--ink-subtle)', maxWidth: '480px', lineHeight: 1.65, marginBottom: '36px', fontWeight: 400 }}>
+            {t('home.hero_subtitle')}
+          </p>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <motion.div whileHover="hover" initial="rest" animate="rest">
+              <Link to={cta.to}>
+                <motion.span style={{
+                  display: 'inline-flex', alignItems: 'center', gap: '0px',
+                  borderRadius: '9999px', background: 'var(--accent)',
+                  color: '#fff', fontSize: '14px', fontWeight: 700,
+                  padding: '11px 20px', overflow: 'hidden', position: 'relative',
+                }}>
+                  <motion.span
+                    variants={{
+                      rest: { width: 0, opacity: 0, marginRight: 0 },
+                      hover: { width: '18px', opacity: 1, marginRight: '6px' },
+                    }}
+                    transition={{ duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
+                    style={{ display: 'inline-flex', alignItems: 'center', overflow: 'hidden', flexShrink: 0 }}
+                  >
+                    <ArrowRight size={14} weight="bold" />
+                  </motion.span>
+                  {cta.label}
+                </motion.span>
+              </Link>
+            </motion.div>
+            <span style={{ fontSize: '13px', color: 'var(--ink-tertiary)', fontWeight: 500 }}>
+              {t('home.start_date')}
+            </span>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* ── Leaderboard ───────────────────────────────────────────── */}
+      <section style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
+        <div style={{ marginBottom: '32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+          <p className="eyebrow" style={{ marginBottom: '8px' }}>{t('home.leaderboard_eyebrow')}</p>
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 800,
+            letterSpacing: '-0.04em', color: 'var(--ink)',
+            lineHeight: 1.1, marginBottom: '12px',
+          }}>
+            {t('leaderboard.title')}
+          </h2>
+          <p style={{ fontSize: '15px', color: 'var(--ink-subtle)', fontWeight: 400, maxWidth: '420px' }}>
+            {t('home.leaderboard_sub')}
+          </p>
+        </div>
+        <ContainerScroll>
           {loading ? (
-            <div className="card text-center py-16 text-ink-tertiary text-body">
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100%' }}>
               <motion.div
+                style={{ fontSize: '14px', color: 'var(--ink-tertiary)' }}
                 animate={{ opacity: [0.4, 1, 0.4] }}
                 transition={{ duration: 1.5, repeat: Infinity }}
               >
-                Загрузка рейтинга...
+                {t('home.loading')}
               </motion.div>
             </div>
           ) : (
-            <Leaderboard entries={entries} />
+            <div style={{ height: '100%', overflowY: 'auto', padding: '4px' }}>
+              <Leaderboard entries={entries} />
+            </div>
           )}
-        </motion.div>
-      </div>
+        </ContainerScroll>
+      </section>
+
+      {/* ── DMAIC Timeline ────────────────────────────────────────── */}
+      <section style={{ paddingBottom: '80px', scrollMarginTop: '80px' }}>
+        <DMAICTimeline />
+      </section>
+
+      <style>{`
+        @keyframes pulse {
+          0%, 100% { opacity: 1; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(0.85); }
+        }
+      `}</style>
     </Layout>
   )
 }

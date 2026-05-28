@@ -9,7 +9,35 @@
     "login": "Войти",
     "username": "Логин",
     "password": "Пароль",
-    "title": "Вход в систему"
+    "title": "Вход в систему",
+    "error": "Неверный логин или пароль",
+    "loading": "Входим..."
+  },
+  "home": {
+    "hero_title": "Программа <br/><accent>непрерывного</accent><br/>совершенствования",
+    "hero_subtitle": "Участники проходят 4 этапа DMAIC, получают баррели за каждый шаг и соревнуются за награды от председателя правления.",
+    "start_date": "Старт: 18 мая 2026",
+    "cta_login": "Войти в платформу",
+    "cta_dashboard": "Мой кабинет",
+    "cta_admin": "Панель администратора",
+    "leaderboard_eyebrow": "Рейтинг",
+    "leaderboard_sub": "Топ участников по количеству баррелей · до 20 максимум",
+    "loading": "Загрузка рейтинга...",
+    "participants_count": "{{count}} участников",
+    "no_data": "Нет данных"
+  },
+  "timeline": {
+    "section_label": "Этапы программы",
+    "section_title": "4 шага DMAIC",
+    "step_prefix": "ЭТАП",
+    "d_label": "Define",
+    "d_sub": "Определение проблемы",
+    "ma_label": "Measure + Analyze",
+    "ma_sub": "Измерение и анализ данных",
+    "i_label": "Improve",
+    "i_sub": "Оптимизация процесса",
+    "c_label": "Control",
+    "c_sub": "Контроль результатов"
   },
   "stage": {
     "D": "Define — Определение",

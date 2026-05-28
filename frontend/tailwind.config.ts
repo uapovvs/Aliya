@@ -2,73 +2,80 @@ import type { Config } from 'tailwindcss'
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
+  darkMode: 'class',
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Inter', 'SF Pro Display', '-apple-system', 'system-ui', 'sans-serif'],
+        sans: ['Nunito', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'SF Mono', 'monospace'],
       },
+      fontWeight: {
+        '300': '300',
+        '400': '400',
+        '500': '500',
+        '600': '600',
+        '700': '700',
+        '800': '800',
+      },
       colors: {
-        // Linear-style canvas + surface ladder
-        canvas:  '#010102',
-        's1':    '#0f1011',
-        's2':    '#141516',
-        's3':    '#18191a',
-        hl:      '#23252a',
-        'hl-strong': '#34343a',
-
-        // Text
-        ink:        '#f7f8f8',
-        'ink-muted':   '#d0d6e0',
-        'ink-subtle':  '#8a8f98',
-        'ink-tertiary':'#62666d',
-
-        // Accents
-        accent:      '#5e6ad2',
-        'accent-hover': '#828fff',
-        'accent-focus': '#5e69d1',
-
-        // Barrel gold (gamification)
-        barrel:      '#D4A017',
-        'barrel-dim':   '#a07a0f',
-
-        // Semantic
-        success: '#27a644',
-        danger:  '#e54d2e',
+        canvas:          'var(--canvas)',
+        s1:              'var(--s1)',
+        s2:              'var(--s2)',
+        s3:              'var(--s3)',
+        hl:              'var(--hl)',
+        'hl-strong':     'var(--hl-strong)',
+        ink:             'var(--ink)',
+        'ink-muted':     'var(--ink-muted)',
+        'ink-subtle':    'var(--ink-subtle)',
+        'ink-tertiary':  'var(--ink-tertiary)',
+        accent:          'var(--accent)',
+        'accent-hover':  'var(--accent-hover)',
+        'accent-focus':  'var(--accent-focus)',
+        barrel:          'var(--barrel)',
+        'barrel-dim':    'var(--barrel-dim)',
+        success:         'var(--success)',
+        danger:          'var(--danger)',
       },
       fontSize: {
-        'display': ['2.5rem', { lineHeight: '1.10', letterSpacing: '-0.04em', fontWeight: '600' }],
-        'headline': ['1.75rem', { lineHeight: '1.20', letterSpacing: '-0.03em', fontWeight: '600' }],
-        'card-title': ['1.25rem', { lineHeight: '1.25', letterSpacing: '-0.02em', fontWeight: '500' }],
-        'body-lg': ['1rem', { lineHeight: '1.50', letterSpacing: '-0.005em' }],
-        'body': ['0.875rem', { lineHeight: '1.50', letterSpacing: '0' }],
-        'caption': ['0.75rem', { lineHeight: '1.40', letterSpacing: '0' }],
-        'eyebrow': ['0.6875rem', { lineHeight: '1.30', letterSpacing: '0.05em', fontWeight: '500' }],
+        'display':    ['clamp(2.5rem,6vw,4.5rem)', { lineHeight: '1.05', letterSpacing: '-0.04em', fontWeight: '800' }],
+        'headline':   ['1.875rem',  { lineHeight: '1.18', letterSpacing: '-0.03em', fontWeight: '700' }],
+        'card-title': ['1.25rem',   { lineHeight: '1.25', letterSpacing: '-0.02em', fontWeight: '600' }],
+        'body-lg':    ['1.0625rem', { lineHeight: '1.6',  letterSpacing: '-0.005em' }],
+        'body':       ['0.9375rem', { lineHeight: '1.6',  letterSpacing: '0' }],
+        'caption':    ['0.8125rem', { lineHeight: '1.4',  letterSpacing: '0' }],
+        'eyebrow':    ['0.6875rem', { lineHeight: '1.3',  letterSpacing: '0.12em', fontWeight: '600' }],
       },
       borderRadius: {
-        sm:   '6px',
-        md:   '8px',
-        lg:   '12px',
-        xl:   '16px',
+        sm:   '8px',
+        md:   '12px',
+        lg:   '16px',
+        xl:   '20px',
+        '2xl':'24px',
+        '3xl':'32px',
         pill: '9999px',
         full: '9999px',
       },
       borderColor: {
-        DEFAULT: '#23252a',
+        DEFAULT: 'var(--hl)',
       },
       keyframes: {
         'fade-up': {
-          '0%':   { opacity: '0', transform: 'translateY(12px)' },
+          '0%':   { opacity: '0', transform: 'translateY(14px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
         'barrel-pulse': {
           '0%, 100%': { opacity: '1' },
-          '50%':      { opacity: '0.6' },
+          '50%':      { opacity: '0.55' },
+        },
+        'slide-in-left': {
+          '0%':   { opacity: '0', transform: 'translateX(-8px)' },
+          '100%': { opacity: '1', transform: 'translateX(0)' },
         },
       },
       animation: {
-        'fade-up': 'fade-up 0.6s cubic-bezier(0.16,1,0.3,1) both',
-        'barrel-pulse': 'barrel-pulse 2s ease-in-out infinite',
+        'fade-up':       'fade-up 0.55s cubic-bezier(0.16,1,0.3,1) both',
+        'barrel-pulse':  'barrel-pulse 2s ease-in-out infinite',
+        'slide-in-left': 'slide-in-left 0.3s cubic-bezier(0.16,1,0.3,1) both',
       },
     },
   },

@@ -9,7 +9,35 @@
     "login": "Кіру",
     "username": "Логин",
     "password": "Құпия сөз",
-    "title": "Жүйеге кіру"
+    "title": "Жүйеге кіру",
+    "error": "Қате логин немесе құпия сөз",
+    "loading": "Кіруде..."
+  },
+  "home": {
+    "hero_title": "Үздіксіз <br/><accent>жетілдіру</accent><br/>бағдарламасы",
+    "hero_subtitle": "Қатысушылар DMAIC-тің 4 кезеңінен өтіп, әр қадам үшін бочкалар алып, басқарма төрағасынан марапат үшін бәсекелеседі.",
+    "start_date": "Басталуы: 18 мамыр 2026",
+    "cta_login": "Платформаға кіру",
+    "cta_dashboard": "Менің кабинетім",
+    "cta_admin": "Әкімші панелі",
+    "leaderboard_eyebrow": "Рейтинг",
+    "leaderboard_sub": "Барреліктер саны бойынша үздік қатысушылар · максимум 20",
+    "loading": "Рейтинг жүктелуде...",
+    "participants_count": "{{count}} қатысушы",
+    "no_data": "Деректер жоқ"
+  },
+  "timeline": {
+    "section_label": "Бағдарлама кезеңдері",
+    "section_title": "DMAIC-тің 4 қадамы",
+    "step_prefix": "КЕЗЕҢ",
+    "d_label": "Define",
+    "d_sub": "Мәселені анықтау",
+    "ma_label": "Measure + Analyze",
+    "ma_sub": "Деректерді өлшеу және талдау",
+    "i_label": "Improve",
+    "i_sub": "Процесті оңтайландыру",
+    "c_label": "Control",
+    "c_sub": "Нәтижелерді бақылау"
   },
   "stage": {
     "D": "Define — Анықтау",

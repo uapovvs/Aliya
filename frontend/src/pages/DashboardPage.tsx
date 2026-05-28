@@ -2,15 +2,23 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
-import { Camera, User, ArrowRight } from '@phosphor-icons/react'
+import { Camera, ArrowRight } from '@phosphor-icons/react'
 import Layout from '@/components/Layout'
 import StageCard from '@/components/StageCard'
 import BarrelProgress from '@/components/BarrelProgress'
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Badge } from '@/components/ui/badge'
 import { getMyStages } from '@/api/stages'
 import { getMe } from '@/api/auth'
 import type { StageResponse, UserProfile, RewardKey } from '@/types'
 
 const STAGE_KEYS = ['D', 'M_A', 'I', 'C'] as const
+
+type StatusVariant = 'draft' | 'submitted' | 'approved' | 'rejected'
+const STATUS_VARIANT: Record<string, StatusVariant> = {
+  DRAFT: 'draft', SUBMITTED: 'submitted', APPROVED: 'approved', REJECTED: 'rejected',
+}
 
 export default function DashboardPage() {
   const { t } = useTranslation()
@@ -44,6 +52,9 @@ export default function DashboardPage() {
     )
   }
 
+  const initials = profile?.fullName
+    ?.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase() ?? '??'
+
   return (
     <Layout>
       {/* Profile header */}
@@ -54,13 +65,10 @@ export default function DashboardPage() {
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="relative">
-          {profile?.avatarUrl ? (
-            <img src={profile.avatarUrl} alt="" className="w-14 h-14 rounded-full object-cover border border-hl" />
-          ) : (
-            <div className="w-14 h-14 rounded-full bg-s3 border border-hl flex items-center justify-center">
-              <User size={22} className="text-ink-subtle" />
-            </div>
-          )}
+          <Avatar className="h-14 w-14 border border-hl">
+            <AvatarImage src={profile?.avatarUrl ?? ''} alt={profile?.fullName} />
+            <AvatarFallback className="text-body font-semibold">{initials}</AvatarFallback>
+          </Avatar>
           <Link
             to="/dashboard/avatar"
             className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-s2 border border-hl flex items-center justify-center hover:bg-s3 transition-colors"
@@ -108,27 +116,31 @@ export default function DashboardPage() {
         <div className="space-y-4">
           <BarrelProgress totalBarrels={totalBarrels} reward={reward} />
 
-          {/* Stage status quick view */}
+          {/* Progress status card */}
           <motion.div
-            className="card space-y-3"
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <p className="eyebrow">Прогресс</p>
-            {STAGE_KEYS.map((key) => {
-              const s = stages.find((x) => x.stage === key)
-              const status = s?.status ?? 'DRAFT'
-              const badgeClass =
-                status === 'APPROVED'  ? 'badge-approved'  :
-                status === 'SUBMITTED' ? 'badge-submitted' : 'badge-draft'
-              return (
-                <div key={key} className="flex items-center justify-between">
-                  <span className="text-caption text-ink-subtle">{t(`stage.${key}`)}</span>
-                  <span className={`badge ${badgeClass}`}>{t(`stage.status.${status}`)}</span>
-                </div>
-              )
-            })}
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="eyebrow text-ink-subtle">Прогресс</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3">
+                {STAGE_KEYS.map((key) => {
+                  const s = stages.find((x) => x.stage === key)
+                  const status = s?.status ?? 'DRAFT'
+                  return (
+                    <div key={key} className="flex items-center justify-between">
+                      <span className="text-caption text-ink-subtle">{t(`stage.${key}`)}</span>
+                      <Badge variant={STATUS_VARIANT[status]}>
+                        {t(`stage.status.${status}`)}
+                      </Badge>
+                    </div>
+                  )
+                })}
+              </CardContent>
+            </Card>
           </motion.div>
         </div>
       </div>

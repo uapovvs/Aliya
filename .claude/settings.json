@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "PowerShell(node \"C:\\\\Users\\\\NewAdmin\\\\.claude\\\\skills\\\\playwright-cli\\\\playwright-cli.js\" open \"http://localhost:5173\" -s dmaic 2>&1)",
-      "PowerShell(node \"C:\\\\Users\\\\NewAdmin\\\\.claude\\\\skills\\\\playwright-cli\\\\playwright-cli.js\" -s dmaic goto \"http://localhost:5174\" 2>&1)"
-    ]
-  }
-}

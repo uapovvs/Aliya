@@ -2,117 +2,209 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Linear-style design tokens ──────────────────────────────────── */
-:root {
-  --canvas:       #010102;
-  --s1:           #0f1011;
-  --s2:           #141516;
-  --s3:           #18191a;
-  --hl:           #23252a;
-  --hl-strong:    #34343a;
-
-  --ink:          #f7f8f8;
-  --ink-muted:    #d0d6e0;
-  --ink-subtle:   #8a8f98;
-  --ink-tertiary: #62666d;
-
-  --accent:       #5e6ad2;
-  --accent-hover: #828fff;
-  --accent-focus: #5e69d1;
-
-  --barrel:       #D4A017;
-  --barrel-dim:   #a07a0f;
-
-  --success:      #27a644;
-  --danger:       #e54d2e;
+/* ─── Local Fonts ───────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Gilroy';
+  src: url('/fonts/Gilroy-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Regular.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-LightItalic.ttf') format('truetype');
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Montserrat';
+  src: url('/fonts/Montserrat-Medium.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
 }
 
-/* ─── Base ────────────────────────────────────────────────────────── */
+/* ─── Dark theme ────────────────────────────────────────────────── */
+:root,
+.dark {
+  --canvas:        #06080f;
+  --s1:            #0c0f1a;
+  --s2:            #111520;
+  --s3:            #161b28;
+  --hl:            #1e2438;
+  --hl-strong:     #2a3350;
+
+  --ink:           #eef1f8;
+  --ink-muted:     #c8d0e8;
+  --ink-subtle:    #7a87aa;
+  --ink-tertiary:  #4a5470;
+
+  /* Pastel blue accent — replaces purple */
+  --accent:        #5b8dee;
+  --accent-hover:  #7aa4f5;
+  --accent-focus:  #4a7de0;
+  --accent-subtle: rgba(91,141,238,0.12);
+
+  --barrel:        #f0b429;
+  --barrel-dim:    #c9921a;
+
+  --success:       #22c55e;
+  --danger:        #f43f5e;
+
+  color-scheme: dark;
+}
+
+/* ─── Light theme ───────────────────────────────────────────────── */
+.light {
+  --canvas:        #f5f7ff;
+  --s1:            #edf0fb;
+  --s2:            #e4e9f7;
+  --s3:            #d9e0f3;
+  --hl:            #c8d3ef;
+  --hl-strong:     #a8b8e0;
+
+  --ink:           #0f1626;
+  --ink-muted:     #2a3760;
+  --ink-subtle:    #5468a0;
+  --ink-tertiary:  #8898c8;
+
+  --accent:        #3b74e0;
+  --accent-hover:  #2a62cc;
+  --accent-focus:  #1d50b8;
+  --accent-subtle: rgba(59,116,224,0.10);
+
+  --barrel:        #d97706;
+  --barrel-dim:    #b45309;
+
+  --success:       #16a34a;
+  --danger:        #e11d48;
+
+  color-scheme: light;
+}
+
+/* ─── Base ──────────────────────────────────────────────────────── */
 @layer base {
   *, *::before, *::after { box-sizing: border-box; }
 
-  html { color-scheme: dark; }
+  html { transition: background-color 200ms ease, color 200ms ease; }
 
   body {
-    font-family: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
-    font-size: 0.875rem;
-    line-height: 1.5;
+    font-family: 'Gilroy', 'Montserrat', system-ui, -apple-system, sans-serif;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    font-weight: 400;
     color: var(--ink);
     background-color: var(--canvas);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 200ms ease, color 200ms ease;
   }
 
-  h1 { font-size: 2.5rem;  font-weight: 600; line-height: 1.10; letter-spacing: -0.04em; }
-  h2 { font-size: 1.75rem; font-weight: 600; line-height: 1.20; letter-spacing: -0.03em; }
-  h3 { font-size: 1.25rem; font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; }
-  h4 { font-size: 1rem;    font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; }
+  h1 { font-size: 2.75rem;  font-weight: 800; line-height: 1.08; letter-spacing: -0.04em; }
+  h2 { font-size: 1.875rem; font-weight: 700; line-height: 1.18; letter-spacing: -0.03em; }
+  h3 { font-size: 1.25rem;  font-weight: 600; line-height: 1.25; letter-spacing: -0.02em; }
+  h4 { font-size: 1rem;     font-weight: 600; line-height: 1.35; letter-spacing: -0.01em; }
 
-  ::selection { background: rgba(94,106,210,0.3); }
+  ::selection { background: rgba(91,141,238,0.25); }
 }
 
-/* ─── Components ──────────────────────────────────────────────────── */
+/* ─── Components ────────────────────────────────────────────────── */
 @layer components {
-  /* Buttons */
   .btn {
-    @apply inline-flex items-center gap-2 px-3.5 py-2 rounded-md text-body font-medium
-           transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-accent-focus/50;
+    @apply inline-flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-600
+           transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#5b8dee]/40;
   }
-  .btn-primary {
-    @apply btn bg-accent text-white hover:bg-accent-hover active:bg-accent-focus;
-  }
-  .btn-secondary {
-    @apply btn bg-s1 text-ink border border-hl hover:bg-s2;
-  }
-  .btn-ghost {
-    @apply btn bg-transparent text-ink-subtle hover:text-ink hover:bg-s1;
-  }
+  .btn-primary   { @apply btn text-white; background: var(--accent); }
+  .btn-primary:hover { background: var(--accent-hover); }
+  .btn-secondary { @apply btn bg-s1 text-ink border border-hl hover:bg-s2; }
+  .btn-ghost     { @apply btn bg-transparent text-ink-subtle hover:text-ink hover:bg-s1; }
 
-  /* Cards — Linear surface ladder */
-  .card {
-    @apply bg-s1 border border-hl rounded-lg p-6;
-  }
-  .card-lifted {
-    @apply bg-s2 border border-hl-strong rounded-lg p-6;
-  }
-  .card-panel {
-    @apply bg-s1 border border-hl rounded-xl p-6;
-  }
+  .card        { @apply bg-s1 border border-hl rounded-2xl p-6; }
+  .card-lifted { @apply bg-s2 border border-hl-strong rounded-2xl p-6; }
+  .card-panel  { @apply bg-s1 border border-hl rounded-2xl p-6; }
 
-  /* Input */
   .input {
-    @apply w-full bg-s1 border border-hl rounded-md px-3 py-2
-           text-body text-ink placeholder-ink-tertiary
-           focus:outline-none focus:ring-2 focus:ring-accent-focus/50 focus:border-hl-strong
-           transition-colors duration-150;
+    @apply w-full bg-s2 border border-hl rounded-xl px-4 py-2.5
+           text-sm text-ink placeholder-ink-tertiary
+           focus:outline-none focus:ring-2 focus:ring-[#5b8dee]/40 focus:border-accent
+           transition-all duration-200;
   }
-  .textarea {
-    @apply input resize-none;
-  }
+  .textarea { @apply input resize-none; }
 
-  /* Eyebrow label */
   .eyebrow {
-    @apply text-eyebrow uppercase tracking-widest text-ink-subtle;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-subtle);
   }
 
-  /* Status badge */
-  .badge {
-    @apply inline-flex items-center px-2 py-0.5 rounded-pill text-caption font-medium;
-  }
+  .badge           { @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-600; }
   .badge-draft     { @apply badge bg-s2 text-ink-subtle; }
-  .badge-submitted { @apply badge bg-accent/15 text-accent; }
-  .badge-approved  { @apply badge bg-success/15 text-success; }
-  .badge-rejected  { @apply badge bg-danger/15 text-danger; }
+  .badge-submitted { @apply badge text-accent; background: var(--accent-subtle); }
+  .badge-approved  { @apply badge text-success; background: rgba(34,197,94,0.12); }
+  .badge-rejected  { @apply badge text-danger; background: rgba(244,63,94,0.12); }
 
-  /* Barrel */
   .barrel {
-    @apply inline-flex items-center justify-center w-9 h-9 rounded-full
-           bg-barrel/15 text-barrel font-semibold text-sm;
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full font-700 text-sm;
+    color: var(--barrel);
+    background: rgba(240,180,41,0.12);
   }
 
-  /* Divider */
-  .divider { @apply border-t border-hl; }
+  .divider   { @apply border-t border-hl; }
+  .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
+}
 
-  /* Scroll fade-up animation helper */
-  .animate-in { @apply animate-fade-up; }
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes barrelPulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.6; }
+}
+
+/* ─── Language-specific fonts ───────────────────────────────────── */
+html[lang='ru'] body {
+  font-family: 'Gilroy', system-ui, -apple-system, sans-serif;
+}
+html[lang='kz'] body {
+  font-family: 'Montserrat', system-ui, -apple-system, sans-serif;
 }
