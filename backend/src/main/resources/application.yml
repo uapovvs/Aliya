@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME:dmaic_db}
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:Aliya}
     username: ${DB_USER:dmaic_user}
     password: ${DB_PASSWORD:dmaic_pass}
     driver-class-name: org.postgresql.Driver
