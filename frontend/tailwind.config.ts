@@ -46,10 +46,12 @@ export default {
         'eyebrow': ['0.6875rem', { lineHeight: '1.30', letterSpacing: '0.05em', fontWeight: '500' }],
       },
       borderRadius: {
-        sm: '6px',
-        md: '8px',
-        lg: '12px',
-        xl: '16px',
+        sm:   '6px',
+        md:   '8px',
+        lg:   '12px',
+        xl:   '16px',
+        pill: '9999px',
+        full: '9999px',
       },
       borderColor: {
         DEFAULT: '#23252a',
