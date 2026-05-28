@@ -2,55 +2,120 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Google Fonts — Inter with Cyrillic support */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* ─── Linear-style design tokens ──────────────────────────────────── */
 :root {
-  /* Inter + major-second type scale */
-  --font-sans: 'Inter', system-ui, sans-serif;
+  --canvas:       #010102;
+  --s1:           #0f1011;
+  --s2:           #141516;
+  --s3:           #18191a;
+  --hl:           #23252a;
+  --hl-strong:    #34343a;
 
-  --text-xs:   0.79rem;
-  --text-sm:   0.889rem;
-  --text-base: 1rem;
-  --text-lg:   1.125rem;
-  --text-xl:   1.266rem;
-  --text-2xl:  1.424rem;
-  --text-3xl:  1.602rem;
-  --text-4xl:  1.802rem;
+  --ink:          #f7f8f8;
+  --ink-muted:    #d0d6e0;
+  --ink-subtle:   #8a8f98;
+  --ink-tertiary: #62666d;
 
-  --lh-body:    1.5;
-  --lh-heading: 1.15;
+  --accent:       #5e6ad2;
+  --accent-hover: #828fff;
+  --accent-focus: #5e69d1;
 
-  --color-kmg:       #003D7A;
-  --color-kmg-light: #0059B2;
-  --color-barrel:    #D4A017;
+  --barrel:       #D4A017;
+  --barrel-dim:   #a07a0f;
+
+  --success:      #27a644;
+  --danger:       #e54d2e;
 }
 
+/* ─── Base ────────────────────────────────────────────────────────── */
 @layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { color-scheme: dark; }
+
   body {
-    font-family: var(--font-sans);
-    font-size: var(--text-base);
-    line-height: var(--lh-body);
-    color: #1a1a2e;
-    background-color: #f8fafc;
+    font-family: 'Inter', 'SF Pro Display', -apple-system, system-ui, sans-serif;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    color: var(--ink);
+    background-color: var(--canvas);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  h1 { font-size: var(--text-4xl); line-height: var(--lh-heading); font-weight: 700; letter-spacing: -0.025em; }
-  h2 { font-size: var(--text-3xl); line-height: 1.2;  font-weight: 600; letter-spacing: -0.02em;  }
-  h3 { font-size: var(--text-2xl); line-height: 1.25; font-weight: 600; letter-spacing: -0.015em; }
-  h4 { font-size: var(--text-xl);  line-height: 1.35; font-weight: 500; }
+  h1 { font-size: 2.5rem;  font-weight: 600; line-height: 1.10; letter-spacing: -0.04em; }
+  h2 { font-size: 1.75rem; font-weight: 600; line-height: 1.20; letter-spacing: -0.03em; }
+  h3 { font-size: 1.25rem; font-weight: 500; line-height: 1.25; letter-spacing: -0.02em; }
+  h4 { font-size: 1rem;    font-weight: 500; line-height: 1.35; letter-spacing: -0.01em; }
+
+  ::selection { background: rgba(94,106,210,0.3); }
 }
 
+/* ─── Components ──────────────────────────────────────────────────── */
 @layer components {
+  /* Buttons */
+  .btn {
+    @apply inline-flex items-center gap-2 px-3.5 py-2 rounded-md text-body font-medium
+           transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-accent-focus/50;
+  }
   .btn-primary {
-    @apply bg-kmg text-white px-4 py-2 rounded-lg font-medium text-sm
-           hover:bg-kmg-light transition-colors focus:outline-none focus:ring-2 focus:ring-kmg focus:ring-offset-2;
+    @apply btn bg-accent text-white hover:bg-accent-hover active:bg-accent-focus;
+  }
+  .btn-secondary {
+    @apply btn bg-s1 text-ink border border-hl hover:bg-s2;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-ink-subtle hover:text-ink hover:bg-s1;
   }
 
+  /* Cards — Linear surface ladder */
   .card {
-    @apply bg-white rounded-xl border border-gray-200 shadow-sm p-6;
+    @apply bg-s1 border border-hl rounded-lg p-6;
+  }
+  .card-lifted {
+    @apply bg-s2 border border-hl-strong rounded-lg p-6;
+  }
+  .card-panel {
+    @apply bg-s1 border border-hl rounded-xl p-6;
   }
 
-  .barrel-icon {
-    @apply inline-flex items-center justify-center w-8 h-8 rounded-full
-           bg-amber-100 text-amber-700 font-bold text-sm;
+  /* Input */
+  .input {
+    @apply w-full bg-s1 border border-hl rounded-md px-3 py-2
+           text-body text-ink placeholder-ink-tertiary
+           focus:outline-none focus:ring-2 focus:ring-accent-focus/50 focus:border-hl-strong
+           transition-colors duration-150;
   }
+  .textarea {
+    @apply input resize-none;
+  }
+
+  /* Eyebrow label */
+  .eyebrow {
+    @apply text-eyebrow uppercase tracking-widest text-ink-subtle;
+  }
+
+  /* Status badge */
+  .badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-pill text-caption font-medium;
+  }
+  .badge-draft     { @apply badge bg-s2 text-ink-subtle; }
+  .badge-submitted { @apply badge bg-accent/15 text-accent; }
+  .badge-approved  { @apply badge bg-success/15 text-success; }
+  .badge-rejected  { @apply badge bg-danger/15 text-danger; }
+
+  /* Barrel */
+  .barrel {
+    @apply inline-flex items-center justify-center w-9 h-9 rounded-full
+           bg-barrel/15 text-barrel font-semibold text-sm;
+  }
+
+  /* Divider */
+  .divider { @apply border-t border-hl; }
+
+  /* Scroll fade-up animation helper */
+  .animate-in { @apply animate-fade-up; }
 }
