@@ -191,9 +191,85 @@
   .animate-in { animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both; }
 }
 
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 @keyframes fadeUp {
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ─── Sign-in page animations ───────────────────────────────────── */
+@keyframes signinFadeSlide {
+  from { opacity: 0; filter: blur(6px); transform: translateY(16px); }
+  to   { opacity: 1; filter: blur(0);   transform: translateY(0); }
+}
+@keyframes signinSlideRight {
+  from { opacity: 0; filter: blur(6px); transform: translateX(28px); }
+  to   { opacity: 1; filter: blur(0);   transform: translateX(0); }
+}
+@keyframes signinTestimonial {
+  from { opacity: 0; filter: blur(4px); transform: translateY(14px) scale(0.97); }
+  to   { opacity: 1; filter: blur(0);   transform: translateY(0)    scale(1); }
+}
+
+.signin-element {
+  opacity: 0;
+  animation: signinFadeSlide 0.75s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.signin-slide-right {
+  opacity: 0;
+  animation: signinSlideRight 0.9s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+.signin-testimonial {
+  opacity: 0;
+  animation: signinTestimonial 0.7s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+.signin-delay-50   { animation-delay: 0.05s; }
+.signin-delay-100  { animation-delay: 0.12s; }
+.signin-delay-200  { animation-delay: 0.22s; }
+.signin-delay-300  { animation-delay: 0.32s; }
+.signin-delay-400  { animation-delay: 0.42s; }
+.signin-delay-500  { animation-delay: 0.52s; }
+.signin-delay-600  { animation-delay: 0.62s; }
+.signin-delay-700  { animation-delay: 0.72s; }
+.signin-delay-800  { animation-delay: 0.82s; }
+.signin-delay-900  { animation-delay: 0.92s; }
+.signin-delay-1000 { animation-delay: 1.00s; }
+.signin-delay-1200 { animation-delay: 1.12s; }
+.signin-delay-1400 { animation-delay: 1.24s; }
+
+/* Kill browser autofill blue background on inputs */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 1000px #ffffff inset !important;
+  box-shadow: 0 0 0 1000px #ffffff inset !important;
+  -webkit-text-fill-color: #111111 !important;
+  background-color: #ffffff !important;
+  caret-color: #111111;
+}
+
+/* Force Spline canvas to be transparent so parent bg shows through */
+.spline-canvas-wrapper canvas,
+.spline-canvas-wrapper > div > canvas {
+  background: transparent !important;
+}
+
+@keyframes spotlight {
+  0%   { opacity: 0; transform: translate(-72%, -62%) rotate(10deg) scale(0.5); }
+  100% { opacity: 1; transform: translate(-50%, -40%) rotate(350deg) scale(1); }
+}
+.animate-spotlight {
+  animation: spotlight 2s ease forwards;
 }
 
 @keyframes barrelPulse {

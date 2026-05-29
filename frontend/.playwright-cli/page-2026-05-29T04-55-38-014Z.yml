@@ -1,0 +1,59 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "KMG" [ref=e6] [cursor=pointer]:
+        - /url: /
+        - img "KMG" [ref=e7]
+      - navigation [ref=e9]:
+        - link "Главная" [ref=e10] [cursor=pointer]:
+          - /url: /
+      - generic [ref=e12]:
+        - button "Тёмная тема" [active] [ref=e91] [cursor=pointer]:
+          - img [ref=e92]
+        - button "RU" [ref=e18] [cursor=pointer]:
+          - img [ref=e19]
+          - text: RU
+        - link "Войти" [ref=e21] [cursor=pointer]:
+          - /url: /login
+  - main [ref=e22]:
+    - generic [ref=e24]:
+      - generic [ref=e25]:
+        - img "KazMunayGas" [ref=e26]
+        - generic [ref=e29]: DMAIC Platform
+      - heading "Программа непрерывного совершенствования" [level=1] [ref=e30]:
+        - text: Программа
+        - text: непрерывного
+        - text: совершенствования
+      - paragraph [ref=e31]: Участники проходят 4 этапа DMAIC, получают баррели за каждый шаг и соревнуются за награды от председателя правления.
+      - generic [ref=e32]:
+        - link "Войти в платформу" [ref=e34] [cursor=pointer]:
+          - /url: /login
+          - generic [ref=e35]:
+            - generic:
+              - img
+            - text: Войти в платформу
+        - generic [ref=e37]: "Старт: 18 мая 2026"
+    - generic [ref=e38]:
+      - generic [ref=e39]:
+        - paragraph [ref=e40]: Рейтинг
+        - heading "Рейтинг участников" [level=2] [ref=e41]
+        - paragraph [ref=e42]: Топ участников по количеству баррелей · до 20 максимум
+      - generic [ref=e49]: Нет данных
+    - generic [ref=e51]:
+      - generic [ref=e52]:
+        - paragraph [ref=e53]: Этапы программы
+        - heading "4 шага DMAIC" [level=2] [ref=e54]
+        - paragraph [ref=e55]: Нажмите на узел, чтобы узнать подробности этапа
+      - generic [ref=e59]:
+        - generic [ref=e65] [cursor=pointer]:
+          - img [ref=e68]
+          - generic [ref=e72]: D — Define
+        - generic [ref=e73] [cursor=pointer]:
+          - img [ref=e76]
+          - generic [ref=e77]: M/A — Measure
+        - generic [ref=e78] [cursor=pointer]:
+          - img [ref=e81]
+          - generic [ref=e83]: I — Improve
+        - generic [ref=e84] [cursor=pointer]:
+          - img [ref=e87]
+          - generic [ref=e90]: C — Control

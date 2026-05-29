@@ -1,19 +1,13 @@
-'use client';
 import { cn } from '@/lib/utils';
+import { useThemeStore } from '@/store/themeStore';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
-import { useThemeStore } from '@/store/themeStore';
 
 type DottedSurfaceProps = Omit<React.ComponentProps<'div'>, 'ref'>;
 
 export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
   const { theme } = useThemeStore();
-
   const containerRef = useRef<HTMLDivElement>(null);
-  const sceneRef = useRef<{
-    renderer: THREE.WebGLRenderer;
-    animationId: number;
-  } | null>(null);
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -34,27 +28,32 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
     const positions: number[] = [];
     const colors: number[] = [];
-    const geometry = new THREE.BufferGeometry();
-
-    const isDark = theme === 'dark';
 
     for (let ix = 0; ix < AMOUNTX; ix++) {
       for (let iy = 0; iy < AMOUNTY; iy++) {
         positions.push(ix * SEPARATION - (AMOUNTX * SEPARATION) / 2, 0, iy * SEPARATION - (AMOUNTY * SEPARATION) / 2);
-        if (isDark) colors.push(0.35, 0.38, 0.75); // accent blue
-        else colors.push(0.55, 0.58, 0.90);
+        const c = theme === 'dark' ? 0.85 : 0.1;
+        colors.push(c, c, c);
       }
     }
 
+    const geometry = new THREE.BufferGeometry();
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
     geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
 
-    const material = new THREE.PointsMaterial({ size: 5, vertexColors: true, transparent: true, opacity: 0.5, sizeAttenuation: true });
+    const material = new THREE.PointsMaterial({
+      size: 6,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.35,
+      sizeAttenuation: true,
+    });
+
     const points = new THREE.Points(geometry, material);
     scene.add(points);
 
     let count = 0;
-    let animationId: number = 0;
+    let animationId: number;
 
     const animate = () => {
       animationId = requestAnimationFrame(animate);
@@ -68,7 +67,7 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
       }
       geometry.attributes.position.needsUpdate = true;
       renderer.render(scene, camera);
-      count += 0.07;
+      count += 0.1;
     };
 
     const handleResize = () => {
@@ -79,27 +78,18 @@ export function DottedSurface({ className, ...props }: DottedSurfaceProps) {
 
     window.addEventListener('resize', handleResize);
     animate();
-    sceneRef.current = { renderer, animationId };
 
     return () => {
       window.removeEventListener('resize', handleResize);
-      if (sceneRef.current) {
-        cancelAnimationFrame(sceneRef.current.animationId);
-        geometry.dispose();
-        material.dispose();
-        renderer.dispose();
-        if (containerRef.current && renderer.domElement.parentNode === containerRef.current) {
-          containerRef.current.removeChild(renderer.domElement);
-        }
+      cancelAnimationFrame(animationId);
+      geometry.dispose();
+      material.dispose();
+      renderer.dispose();
+      if (containerRef.current && renderer.domElement.parentNode === containerRef.current) {
+        containerRef.current.removeChild(renderer.domElement);
       }
     };
   }, [theme]);
 
-  return (
-    <div
-      ref={containerRef}
-      className={cn('pointer-events-none fixed inset-0 -z-10', className)}
-      {...props}
-    />
-  );
+  return <div ref={containerRef} className={cn('pointer-events-none absolute inset-0', className)} {...props} />;
 }

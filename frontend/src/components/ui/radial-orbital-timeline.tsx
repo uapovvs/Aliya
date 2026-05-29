@@ -4,6 +4,7 @@ import { ArrowRight, Link, Zap } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useThemeStore } from "@/store/themeStore";
 
 interface TimelineItem {
   id: number;
@@ -33,6 +34,8 @@ export default function RadialOrbitalTimeline({
   const containerRef = useRef<HTMLDivElement>(null);
   const orbitRef = useRef<HTMLDivElement>(null);
   const nodeRefs = useRef<Record<number, HTMLDivElement | null>>({});
+  const { theme } = useThemeStore();
+  const isLight = theme === 'light';
 
   const handleContainerClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (e.target === containerRef.current || e.target === orbitRef.current) {
@@ -72,7 +75,7 @@ export default function RadialOrbitalTimeline({
     let timer: ReturnType<typeof setInterval>;
     if (autoRotate) {
       timer = setInterval(() => {
-        setRotationAngle((prev) => Number(((prev + 0.3) % 360).toFixed(3)));
+        setRotationAngle((prev) => Number(((prev + 0.6) % 360).toFixed(3)));
       }, 50);
     }
     return () => { if (timer) clearInterval(timer); };
@@ -138,7 +141,7 @@ export default function RadialOrbitalTimeline({
           </div>
 
           {/* Orbit ring */}
-          <div className="absolute w-96 h-96 rounded-full border border-white/10" />
+          <div className={`absolute w-96 h-96 rounded-full border ${isLight ? "border-gray-400" : "border-white/10"}`} />
 
           {/* Nodes */}
           {timelineData.map((item, index) => {
@@ -174,23 +177,31 @@ export default function RadialOrbitalTimeline({
 
                 {/* Node circle */}
                 <div className={`
-                  w-10 h-10 rounded-full flex items-center justify-center
+                  w-12 h-12 rounded-full flex items-center justify-center
                   border-2 transition-all duration-300 transform
                   ${isExpanded
-                    ? "bg-white text-black border-white shadow-lg shadow-white/30 scale-150"
+                    ? isLight
+                      ? "bg-gray-900 text-white border-gray-900 shadow-lg shadow-gray-400/40 scale-150"
+                      : "bg-white text-black border-white shadow-lg shadow-white/30 scale-150"
                     : isRelated
-                    ? "bg-white/50 text-black border-white animate-pulse"
+                    ? isLight
+                      ? "bg-gray-700 text-white border-gray-500 animate-pulse"
+                      : "bg-white/50 text-black border-white animate-pulse"
+                    : isLight
+                    ? "bg-gray-800 text-white border-gray-600"
                     : "bg-black/60 text-white border-white/40"}
                 `}>
-                  <Icon size={16} />
+                  <Icon size={20} />
                 </div>
 
                 {/* Label */}
                 <div className={`
-                  absolute top-12 whitespace-nowrap
+                  absolute top-14 whitespace-nowrap
                   text-xs font-semibold tracking-wider
                   transition-all duration-300
-                  ${isExpanded ? "text-white scale-125" : "text-white/70"}
+                  ${isExpanded
+                    ? isLight ? "text-gray-900 scale-125" : "text-white scale-125"
+                    : isLight ? "text-gray-700" : "text-white/70"}
                 `}>
                   {item.title}
                 </div>
