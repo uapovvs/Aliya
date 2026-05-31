@@ -6,6 +6,7 @@ import kz.kmg.dmaic.dto.StageReviewRequest;
 import kz.kmg.dmaic.entity.*;
 import kz.kmg.dmaic.repository.DmaicStageRepository;
 import kz.kmg.dmaic.repository.ProjectRepository;
+import kz.kmg.dmaic.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,8 +20,10 @@ public class StageService {
 
     private final DmaicStageRepository stageRepository;
     private final ProjectRepository projectRepository;
+    private final UserRepository userRepository;
     private final BarrelService barrelService;
 
+    @Transactional
     public List<StageResponse> getMyStages(Long userId) {
         Project project = getOrCreateProject(userId);
         return stageRepository.findByProjectId(project.getId()).stream()
@@ -39,8 +42,8 @@ public class StageService {
                         .status(StageStatus.DRAFT)
                         .build());
 
-        if (dmaicStage.getStatus() == StageStatus.APPROVED) {
-            throw new IllegalStateException("Cannot edit an approved stage");
+        if (dmaicStage.getStatus() == StageStatus.APPROVED || dmaicStage.getStatus() == StageStatus.SUBMITTED) {
+            throw new IllegalStateException("Cannot edit a submitted or approved stage");
         }
         dmaicStage.setContent(request.content());
         dmaicStage.setStatus(StageStatus.DRAFT);
@@ -81,7 +84,7 @@ public class StageService {
         return projectRepository.findByUserId(userId)
                 .orElseGet(() -> projectRepository.save(
                         Project.builder()
-                                .user(new kz.kmg.dmaic.entity.User())
+                                .user(userRepository.getReferenceById(userId))
                                 .title("Мой проект")
                                 .build()));
     }

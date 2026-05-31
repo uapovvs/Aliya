@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { motion } from 'motion/react'
-import { Camera, ArrowRight } from '@phosphor-icons/react'
+import { Camera, Plus } from '@phosphor-icons/react'
 import Layout from '@/components/Layout'
 import StageCard from '@/components/StageCard'
 import BarrelProgress from '@/components/BarrelProgress'
@@ -11,9 +11,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { getMyStages } from '@/api/stages'
 import { getMe } from '@/api/auth'
-import type { StageResponse, UserProfile, RewardKey } from '@/types'
+import type { StageKey, StageResponse, UserProfile, RewardKey } from '@/types'
 
 const STAGE_KEYS = ['D', 'M_A', 'I', 'C'] as const
+
+const STAGE_SLUG: Record<StageKey, string> = {
+  D: 'd', M_A: 'ma', I: 'i', C: 'c',
+}
 
 type StatusVariant = 'draft' | 'submitted' | 'approved' | 'rejected'
 const STATUS_VARIANT: Record<string, StatusVariant> = {
@@ -93,23 +97,39 @@ export default function DashboardPage() {
             <p className="eyebrow">{stages.length} / 4</p>
           </div>
 
-          {stages.length === 0 ? (
-            <motion.div
-              className="card text-center py-10"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            >
-              <p className="text-body-lg text-ink-subtle mb-1">Начните первый этап</p>
-              <p className="text-caption text-ink-tertiary mb-4">
-                Заполните этап D (Define) до 30.06.2026
-              </p>
-              <Link to="/dashboard/stage/d" className="btn-primary inline-flex items-center gap-2">
-                Начать этап D <ArrowRight size={13} />
-              </Link>
-            </motion.div>
-          ) : (
-            stages.map((s, i) => <StageCard key={s.id} stage={s} index={i} />)
-          )}
+          {STAGE_KEYS.map((key, i) => {
+            const existing = stages.find((s) => s.stage === key)
+            if (existing) {
+              return <StageCard key={key} stage={existing} index={i} />
+            }
+            return (
+              <motion.div
+                key={key}
+                initial={{ opacity: 0, y: 8 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: i * 0.07 }}
+              >
+                <div className="card flex items-center gap-4 opacity-50">
+                  <div className="shrink-0 w-11 h-11 rounded-lg bg-s2 border border-hl-strong flex items-center justify-center ring-1 ring-hl/40 ring-offset-1 ring-offset-s1">
+                    <span className="text-sm font-semibold text-ink-subtle leading-none">
+                      {key === 'M_A' ? 'M/A' : key}
+                    </span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-body font-medium text-ink">{t(`stage.${key}`)}</p>
+                    <p className="text-caption text-ink-tertiary">Не начат</p>
+                  </div>
+                  <Link
+                    to={`/dashboard/stage/${STAGE_SLUG[key]}`}
+                    className="btn-secondary text-caption flex items-center gap-1.5 shrink-0"
+                  >
+                    <Plus size={12} />
+                    Начать
+                  </Link>
+                </div>
+              </motion.div>
+            )
+          })}
         </div>
 
         {/* Sidebar */}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation, Trans } from 'react-i18next'
 import { motion } from 'motion/react'
 import { ArrowRight } from '@phosphor-icons/react'
@@ -8,6 +8,7 @@ import Leaderboard from '@/components/Leaderboard'
 import DMAICTimeline from '@/components/DMAICTimeline'
 import { ContainerScroll } from '@/components/ui/container-scroll-animation'
 import { HeroCanvas } from '@/components/ui/hero-canvas'
+import { CinematicHero } from '@/components/ui/cinematic-landing-hero'
 import { getLeaderboard } from '@/api/leaderboard'
 import { useAuthStore } from '@/store/authStore'
 import { useThemeStore } from '@/store/themeStore'
@@ -19,6 +20,7 @@ export default function HomePage() {
   const { t } = useTranslation()
   const { role } = useAuthStore()
   const { theme } = useThemeStore()
+  const navigate = useNavigate()
   const [entries, setEntries] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
 
@@ -32,7 +34,34 @@ export default function HomePage() {
       ? { to: '/dashboard', label: t('home.cta_dashboard') }
       : { to: '/admin', label: t('home.cta_admin') }
 
+  const ctaButtons = (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '16px' }}>
+      <div style={{ display: 'flex', gap: '24px', flexWrap: 'wrap', justifyContent: 'center' }}>
+        <button
+          onClick={() => navigate(cta.to)}
+          className="btn-ch-light"
+          style={{ padding: '16px 40px', borderRadius: '20px', fontSize: '18px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
+        >
+          {cta.label}
+        </button>
+        <button
+          onClick={() => document.getElementById('leaderboard-section')?.scrollIntoView({ behavior: 'smooth' })}
+          className="btn-ch-dark"
+          style={{ padding: '16px 40px', borderRadius: '20px', fontSize: '18px', fontWeight: 700, cursor: 'pointer', border: 'none' }}
+        >
+          {t('home.leaderboard_eyebrow')}
+        </button>
+      </div>
+    </div>
+  )
+
   return (
+    <>
+      <CinematicHero
+        ctaButtons={ctaButtons}
+        metricValue={4}
+        metricLabel="Этапа DMAIC"
+      />
     <Layout>
       {/* ── Hero ──────────────────────────────────────────────────── */}
       <section className="pt-12 pb-16 md:pt-20 md:pb-24" style={{ position: 'relative' }}>
@@ -107,7 +136,7 @@ export default function HomePage() {
       </section>
 
       {/* ── Leaderboard ───────────────────────────────────────────── */}
-      <section style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
+      <section id="leaderboard-section" style={{ marginBottom: '40px', scrollMarginTop: '80px' }}>
         <div style={{ marginBottom: '32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <p className="eyebrow" style={{ marginBottom: '8px' }}>{t('home.leaderboard_eyebrow')}</p>
           <h2 style={{
@@ -152,5 +181,6 @@ export default function HomePage() {
         }
       `}</style>
     </Layout>
+    </>
   )
 }

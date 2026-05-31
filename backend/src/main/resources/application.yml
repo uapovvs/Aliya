@@ -30,3 +30,7 @@ app:
     bucket: dmaic-avatars
   cors:
     allowed-origins: http://localhost:5173
+
+logging:
+  level:
+    kz.kmg.dmaic.security: DEBUG

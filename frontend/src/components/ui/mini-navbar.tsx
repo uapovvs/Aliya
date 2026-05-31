@@ -10,17 +10,12 @@ import { useThemeStore } from '@/store/themeStore';
 import ThemeToggle from '@/components/ThemeToggle';
 
 const AnimatedNavLink = ({ to, children, active }: { to: string; children: React.ReactNode; active: boolean }) => (
-  <Link to={to} className="group relative inline-flex items-center overflow-hidden h-5 text-sm">
-    <div className="flex flex-col transition-transform duration-300 ease-out group-hover:-translate-y-1/2">
-      <span style={{ color: active ? '#fff' : 'rgba(255,255,255,0.5)' }}>{children}</span>
-      <span style={{ color: '#fff' }}>{children}</span>
-    </div>
-    {active && (
-      <span style={{
-        position: 'absolute', bottom: '-2px', left: 0, right: 0,
-        height: '1px', background: 'rgba(91,141,238,0.7)', borderRadius: '1px',
-      }} />
-    )}
+  <Link to={to} style={{
+    fontSize: '15px', fontWeight: 500, textDecoration: 'none',
+    color: active ? '#fff' : 'rgba(255,255,255,0.5)',
+    transition: 'color 0.2s', whiteSpace: 'nowrap',
+  }}>
+    {children}
   </Link>
 );
 
@@ -34,9 +29,11 @@ export function MiniNavbar() {
   const [isOpen, setIsOpen]     = useState(false);
   const [shapeClass, setShapeClass] = useState('rounded-full');
   const [langOpen, setLangOpen] = useState(false);
+  const [visible, setVisible]   = useState(true);
 
-  const shapeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const langRef    = useRef<HTMLDivElement>(null);
+  const shapeTimer  = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const langRef     = useRef<HTMLDivElement>(null);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const handler = (e: MouseEvent) => {
@@ -44,6 +41,23 @@ export function MiniNavbar() {
     };
     document.addEventListener('mousedown', handler);
     return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      const y = window.scrollY;
+      if (y < 60) {
+        setVisible(true);
+      } else if (y > lastScrollY.current + 6) {
+        setVisible(false);
+        setIsOpen(false);
+      } else if (y < lastScrollY.current - 4) {
+        setVisible(true);
+      }
+      lastScrollY.current = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   useEffect(() => { setIsOpen(false); }, [location.pathname]);
@@ -83,7 +97,11 @@ export function MiniNavbar() {
                   flex flex-col items-center px-10 py-3
                   border border-[#ffffff12] bg-[rgba(8,11,20,0.88)] backdrop-blur-xl
                   w-[calc(100%-2rem)] sm:w-auto ${shapeClass}`}
-      style={{ boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset' }}
+      style={{
+        boxShadow: '0 8px 40px rgba(0,0,0,0.5), 0 1px 0 rgba(255,255,255,0.05) inset',
+        transform: `translateX(-50%) translateY(${visible ? '0' : 'calc(-100% - 24px)'})`,
+        transition: 'transform 0.35s cubic-bezier(0.32,0.72,0,1)',
+      }}
     >
       {/* Desktop row — все элементы в одну линию с равными отступами */}
       <div className="hidden sm:flex items-center gap-6">

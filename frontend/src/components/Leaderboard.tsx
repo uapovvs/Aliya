@@ -9,13 +9,13 @@ import type { LeaderboardEntry } from '@/types'
 interface Props { entries: LeaderboardEntry[] }
 
 const REWARD_ICON: Record<string, React.ReactNode> = {
-  JAPAN_TRIP:        <AirplaneTilt weight="fill" size={13} className="text-barrel" />,
+  JAPAN_TRIP:        <AirplaneTilt weight="fill" size={13} className="text-accent" />,
   LEADERSHIP_AWARD:  <Trophy weight="fill" size={13} className="text-accent" />,
   BRANDED_MERCH:     <Bag weight="fill" size={13} className="text-success" />,
   PROJECT_BADGE:     <Bookmark weight="fill" size={13} className="text-ink-subtle" />,
 }
 
-const RANK_STYLE = ['text-barrel font-bold', 'text-ink-muted font-semibold', 'text-ink-subtle font-semibold']
+const RANK_STYLE = ['text-accent font-bold', 'text-ink-muted font-semibold', 'text-ink-subtle font-semibold']
 
 const MAX_BARRELS = 20
 
@@ -54,7 +54,7 @@ export default function Leaderboard({ entries }: Props) {
                     <span style={{
                       display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
                       width: '26px', height: '26px', borderRadius: '50%',
-                      background: i === 0 ? 'linear-gradient(135deg,#f0b429,#d97706)' : i === 1 ? 'linear-gradient(135deg,#94a3b8,#64748b)' : 'linear-gradient(135deg,#cd7c3a,#92400e)',
+                      background: i === 0 ? 'linear-gradient(135deg,#5b8dee,#3b74e0)' : i === 1 ? 'linear-gradient(135deg,#94a3b8,#64748b)' : 'linear-gradient(135deg,#7b92a8,#4a6070)',
                       fontSize: '11px', fontWeight: 800, color: '#fff',
                     }}>
                       {i + 1}
@@ -88,15 +88,15 @@ export default function Leaderboard({ entries }: Props) {
                 <TableCell>
                   <div className="flex items-center gap-3 min-w-[120px]">
                     <motion.span
-                      className={`barrel shrink-0 flex items-center gap-1 ${entry.totalBarrels === 0 ? 'opacity-25' : ''}`}
+                      className={`barrel shrink-0 flex items-center gap-1.5 ${entry.totalBarrels === 0 ? 'opacity-25' : ''}`}
                       whileHover={{ scale: 1.1 }}
                     >
-                      <BarrelIcon size={13} color="var(--barrel)" strokeWidth={1.6} />
+                      <BarrelIcon size={20} color="var(--ink)" strokeWidth={2} />
                       {entry.totalBarrels}
                     </motion.span>
-                    <div className="flex-1 h-1 bg-hl rounded-pill overflow-hidden">
+                    <div className="flex-1 h-1.5 bg-hl rounded-pill overflow-hidden">
                       <motion.div
-                        className="h-full bg-barrel rounded-pill"
+                        className="h-full bg-accent rounded-pill"
                         initial={{ width: 0 }}
                         animate={{ width: `${(entry.totalBarrels / MAX_BARRELS) * 100}%` }}
                         transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1], delay: i * 0.04 + 0.2 }}
