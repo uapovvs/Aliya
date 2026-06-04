@@ -60,7 +60,10 @@ export function MiniNavbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  useEffect(() => { setIsOpen(false); }, [location.pathname]);
+  useEffect(() => {
+    setIsOpen(false);
+    setVisible(true);
+  }, [location.pathname]);
 
   useEffect(() => {
     if (shapeTimer.current) clearTimeout(shapeTimer.current);
@@ -127,7 +130,7 @@ export function MiniNavbar() {
 
         {/* Nav links */}
         <nav className="flex items-center gap-6">
-          <Link to={homeLink.to} style={{
+          <Link to={homeLink.to} state={{ skipHero: true }} style={{
             fontSize: '15px', fontWeight: 500, textDecoration: 'none',
             color: active(homeLink.to) ? '#fff' : 'rgba(255,255,255,0.5)',
             transition: 'color 0.2s', whiteSpace: 'nowrap',
@@ -287,7 +290,7 @@ export function MiniNavbar() {
                        ${isOpen ? 'max-h-96 opacity-100 pt-4' : 'max-h-0 opacity-0 pointer-events-none'}`}>
         <nav className="flex flex-col items-center gap-3 w-full pb-2">
           {[homeLink, ...navLinks].map(link => (
-            <Link key={link.to} to={link.to} style={{
+            <Link key={link.to} to={link.to} state={link.to === '/' ? { skipHero: true } : undefined} style={{
               fontSize: '14px', fontWeight: 500, width: '100%', textAlign: 'center',
               color: active(link.to) ? '#fff' : 'rgba(255,255,255,0.55)',
               textDecoration: 'none', padding: '6px 0',
