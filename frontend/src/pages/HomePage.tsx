@@ -45,7 +45,7 @@ export default function HomePage() {
           {/* Logo + DMAIC Platform label */}
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '8px', marginBottom: '32px', marginLeft: '-0px' }}>
             <img
-              src="/KazMunayGas_logo.svg"
+              src={`${import.meta.env.BASE_URL}KazMunayGas_logo.svg`}
               alt="KazMunayGas"
               style={{
                 height: '100px', width: 'auto',

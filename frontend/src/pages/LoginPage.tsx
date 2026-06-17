@@ -40,7 +40,7 @@ export default function LoginPage() {
       onSignIn={handleSignIn}
       onBackHome={() => navigate('/')}
       backHomeLabel={`← ${t('nav.home')}`}
-      logoSrc="/KazMunayGas_logo.svg"
+      logoSrc={`${import.meta.env.BASE_URL}KazMunayGas_logo.svg`}
       logoFilter="none"
       usernameLabel={t('auth.username')}
       usernamePlaceholder="Введите логин"

@@ -123,7 +123,7 @@ export const SignInPage: React.FC<SignInPageProps> = ({
   heroImageSrc, splineScene,
   onSignIn, onGoogleSignIn, onResetPassword, onCreateAccount, onBackHome,
   backHomeLabel = '← Главная',
-  logoSrc, logoFilter = 'brightness(0)',
+  logoSrc, logoFilter: _logoFilter = 'brightness(0)',
   usernameLabel = 'Логин', usernamePlaceholder = 'Введите логин',
   passwordLabel = 'Пароль', passwordPlaceholder = '••••••••',
   submitLabel = 'Войти', loading = false, error,

@@ -1,4 +1,4 @@
-import React from "react";
+import type {} from "react";
 
 interface SpinnerProps {
   size?: number;

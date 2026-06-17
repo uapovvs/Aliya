@@ -16,7 +16,7 @@ function RequireRole({ role, children }: { role: 'ADMIN' | 'PARTICIPANT'; childr
 
 export default function App() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/Aliya">
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
