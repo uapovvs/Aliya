@@ -35,10 +35,27 @@ public class AdminController {
         return ResponseEntity.ok(stageService.getSubmittedStages());
     }
 
+    @GetMapping("/users/{userId}/stages")
+    public ResponseEntity<List<StageResponse>> getUserStages(@PathVariable Long userId) {
+        return ResponseEntity.ok(stageService.getUserStages(userId));
+    }
+
     @PutMapping("/stages/{stageId}/review")
     public ResponseEntity<StageResponse> reviewStage(
             @PathVariable Long stageId,
             @Valid @RequestBody StageReviewRequest request) {
         return ResponseEntity.ok(stageService.reviewStage(stageId, request));
+    }
+
+    @PutMapping("/stages/{stageId}/reject")
+    public ResponseEntity<StageResponse> rejectStage(
+            @PathVariable Long stageId,
+            @RequestBody RejectStageRequest request) {
+        return ResponseEntity.ok(stageService.rejectStage(stageId, request.comment()));
+    }
+
+    @GetMapping("/dashboard")
+    public ResponseEntity<AdminDashboardResponse> getDashboard() {
+        return ResponseEntity.ok(stageService.getAdminDashboard());
     }
 }

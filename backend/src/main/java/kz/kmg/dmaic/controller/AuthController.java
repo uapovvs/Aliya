@@ -1,7 +1,6 @@
 package kz.kmg.dmaic.controller;
 
 import jakarta.validation.Valid;
-import kz.kmg.dmaic.dto.AuthResponse;
 import kz.kmg.dmaic.dto.LoginRequest;
 import kz.kmg.dmaic.service.AuthService;
 import lombok.RequiredArgsConstructor;

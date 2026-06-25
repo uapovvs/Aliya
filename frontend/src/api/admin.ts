@@ -1,5 +1,5 @@
 import api from './client'
-import type { StageResponse, UserProfile } from '@/types'
+import type { StageResponse, UserProfile, AdminDashboard } from '@/types'
 
 export interface CreateUserPayload {
   username: string
@@ -19,3 +19,12 @@ export const getSubmittedStages = () =>
 
 export const reviewStage = (stageId: number, score: number, comment?: string) =>
   api.put<StageResponse>(`/admin/stages/${stageId}/review`, { score, comment }).then((r) => r.data)
+
+export const rejectStage = (stageId: number, comment: string) =>
+  api.put<StageResponse>(`/admin/stages/${stageId}/reject`, { comment }).then((r) => r.data)
+
+export const getAdminDashboard = () =>
+  api.get<AdminDashboard>('/admin/dashboard').then((r) => r.data)
+
+export const getUserStages = (userId: number) =>
+  api.get<StageResponse[]>(`/admin/users/${userId}/stages`).then((r) => r.data)

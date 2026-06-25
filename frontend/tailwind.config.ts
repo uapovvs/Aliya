@@ -6,7 +6,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Nunito', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['Gilroy', 'Montserrat', 'system-ui', '-apple-system', 'sans-serif'],
         mono: ['JetBrains Mono', 'ui-monospace', 'SF Mono', 'monospace'],
       },
       fontWeight: {

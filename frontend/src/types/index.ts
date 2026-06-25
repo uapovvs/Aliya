@@ -12,6 +12,15 @@ export interface UserProfile {
   role: Role
 }
 
+export interface StageFileInfo {
+  id: number
+  fileName: string
+  fileUrl: string
+  fileSize: number
+  contentType: string
+  uploadedAt: string
+}
+
 export interface StageResponse {
   id: number
   stage: StageKey
@@ -23,6 +32,9 @@ export interface StageResponse {
   submittedAt: string | null
   reviewedAt: string | null
   barrels: number
+  files: StageFileInfo[]
+  ownerId: number | null
+  ownerFullName: string | null
 }
 
 export interface LeaderboardEntry {
@@ -32,4 +44,29 @@ export interface LeaderboardEntry {
   position: string | null
   totalBarrels: number
   reward: RewardKey
+}
+
+export interface StageProgressItem {
+  stage: StageKey
+  status: StageStatus
+  score: number | null
+  submittedAt: string | null
+}
+
+export interface ParticipantProgress {
+  userId: number
+  fullName: string
+  position: string | null
+  avatarUrl: string | null
+  stages: StageProgressItem[]
+  totalBarrels: number
+}
+
+export interface AdminDashboard {
+  totalParticipants: number
+  totalStagesSubmitted: number
+  totalStagesApproved: number
+  totalStagesRejected: number
+  totalStagesDraft: number
+  participants: ParticipantProgress[]
 }

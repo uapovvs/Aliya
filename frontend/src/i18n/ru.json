@@ -52,7 +52,9 @@
       "APPROVED": "Одобрен",
       "REJECTED": "Отклонён"
     },
-    "deadline": "Дедлайн"
+    "deadline": "Дедлайн",
+    "rejectedNotice": "Этап отклонён администратором. Внесите исправления и отправьте повторно.",
+    "resubmit": "Отправить повторно"
   },
   "barrel": {
     "label": "Барреля",
@@ -76,6 +78,26 @@
     "review": "Проверить",
     "score": "Оценка (%)",
     "comment": "Комментарий",
-    "approve": "Подтвердить оценку"
+    "approve": "Подтвердить оценку",
+    "reject": "На доработку",
+    "rejectTitle": "Отправить на доработку",
+    "rejectComment": "Причина доработки",
+    "rejectConfirm": "Отправить",
+    "dashboard": "Дашборд",
+    "statsTotal": "Всего участников",
+    "statsSubmitted": "На проверке",
+    "statsApproved": "Одобрено",
+    "statsRejected": "На доработке",
+    "statsDraft": "Черновики",
+    "participantsProgress": "Прогресс участников",
+    "overallProgress": "Общий прогресс",
+    "attachments": "Прикреплённые файлы",
+    "download": "Скачать",
+    "noFiles": "Файлы не прикреплены",
+    "uploadFile": "Загрузить файл",
+    "dropFiles": "Перетащите файлы сюда или нажмите для выбора",
+    "fileLimit": "Макс. 5 файлов, до 10 МБ каждый (PDF, DOCX, XLSX, PNG, JPG)",
+    "deleteFile": "Удалить",
+    "stageNotStarted": "Не начат"
   }
 }

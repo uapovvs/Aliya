@@ -115,7 +115,7 @@ export function MiniNavbar() {
           onMouseLeave={e => (e.currentTarget as HTMLElement).style.opacity = '0.9'}
         >
           <img
-            src="/favicon.svg"
+            src={`${import.meta.env.BASE_URL}KazMunayGas_logo.svg`}
             alt="KMG"
             style={{
               height: '44px', width: 'auto',
@@ -265,7 +265,7 @@ export function MiniNavbar() {
       <div className="sm:hidden flex items-center justify-between w-full">
         <Link to="/" style={{ display: 'flex', alignItems: 'center' }}>
           <img
-            src="/favicon.svg"
+            src={`${import.meta.env.BASE_URL}KazMunayGas_logo.svg`}
             alt="KMG"
             style={{
               height: '28px', width: 'auto',

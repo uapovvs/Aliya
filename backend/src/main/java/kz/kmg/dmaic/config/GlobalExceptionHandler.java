@@ -41,4 +41,10 @@ public class GlobalExceptionHandler {
                 .orElse("Validation failed");
         return ResponseEntity.badRequest().body(Map.of("error", message));
     }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<Map<String, String>> handleRuntime(RuntimeException e) {
+        String msg = e.getMessage() != null ? e.getMessage() : "Internal server error";
+        return ResponseEntity.status(HttpStatus.BAD_GATEWAY).body(Map.of("error", msg));
+    }
 }

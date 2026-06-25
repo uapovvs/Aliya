@@ -6,6 +6,9 @@ import DashboardPage from '@/pages/DashboardPage'
 import StagePage from '@/pages/StagePage'
 import AdminPage from '@/pages/admin/AdminPage'
 import AdminReviewPage from '@/pages/admin/AdminReviewPage'
+import AdminDashboardPage from '@/pages/admin/AdminDashboardPage'
+
+import AdminUserDetailPage from '@/pages/admin/AdminUserDetailPage'
 
 function RequireRole({ role, children }: { role: 'ADMIN' | 'PARTICIPANT'; children: JSX.Element }) {
   const auth = useAuthStore()
@@ -14,11 +17,19 @@ function RequireRole({ role, children }: { role: 'ADMIN' | 'PARTICIPANT'; childr
   return children
 }
 
+function HomeRoute() {
+  const auth = useAuthStore()
+  if (auth.token) {
+    return <Navigate to={auth.role === 'ADMIN' ? '/admin/dashboard' : '/dashboard'} replace />
+  }
+  return <HomePage />
+}
+
 export default function App() {
   return (
     <BrowserRouter basename="/Aliya">
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<HomeRoute />} />
         <Route path="/login" element={<LoginPage />} />
 
         <Route
@@ -38,8 +49,18 @@ export default function App() {
           }
         />
 
+        <Route path="/admin" element={<Navigate to="/admin/dashboard" replace />} />
+        
         <Route
-          path="/admin"
+          path="/admin/dashboard"
+          element={
+            <RequireRole role="ADMIN">
+              <AdminDashboardPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/users"
           element={
             <RequireRole role="ADMIN">
               <AdminPage />
@@ -47,7 +68,15 @@ export default function App() {
           }
         />
         <Route
-          path="/admin/review/:userId"
+          path="/admin/users/:userId"
+          element={
+            <RequireRole role="ADMIN">
+              <AdminUserDetailPage />
+            </RequireRole>
+          }
+        />
+        <Route
+          path="/admin/review/all"
           element={
             <RequireRole role="ADMIN">
               <AdminReviewPage />
@@ -58,3 +87,4 @@ export default function App() {
     </BrowserRouter>
   )
 }
+

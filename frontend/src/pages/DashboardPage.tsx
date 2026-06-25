@@ -11,7 +11,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { getMyStages } from '@/api/stages'
 import { getMe } from '@/api/auth'
-import type { StageKey, StageResponse, UserProfile, RewardKey } from '@/types'
+import { getLeaderboard } from '@/api/leaderboard'
+import Leaderboard from '@/components/Leaderboard'
+import type { StageKey, StageResponse, UserProfile, RewardKey, LeaderboardEntry } from '@/types'
 
 const STAGE_KEYS = ['D', 'M_A', 'I', 'C'] as const
 
@@ -28,11 +30,12 @@ export default function DashboardPage() {
   const { t } = useTranslation()
   const [stages, setStages]   = useState<StageResponse[]>([])
   const [profile, setProfile] = useState<UserProfile | null>(null)
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    Promise.all([getMyStages(), getMe()])
-      .then(([s, p]) => { setStages(s); setProfile(p) })
+    Promise.all([getMyStages(), getMe(), getLeaderboard()])
+      .then(([s, p, l]) => { setStages(s); setProfile(p); setLeaderboard(l) })
       .finally(() => setLoading(false))
   }, [])
 
@@ -63,28 +66,29 @@ export default function DashboardPage() {
     <Layout>
       {/* Profile header */}
       <motion.div
-        className="flex items-center gap-5 mb-10 pb-8 border-b border-hl"
+        className="flex items-center gap-6 mb-10 p-6 rounded-2xl bg-s1/50 backdrop-blur-xl border border-hl shadow-sm relative overflow-hidden"
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
       >
+        <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent pointer-events-none" />
         <div className="relative">
-          <Avatar className="h-14 w-14 border border-hl">
+          <Avatar className="h-20 w-20 border-2 border-accent/20 shadow-lg">
             <AvatarImage src={profile?.avatarUrl ?? ''} alt={profile?.fullName} />
-            <AvatarFallback className="text-body font-semibold">{initials}</AvatarFallback>
+            <AvatarFallback className="text-xl font-bold bg-s2 text-ink">{initials}</AvatarFallback>
           </Avatar>
           <Link
             to="/dashboard/avatar"
-            className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-s2 border border-hl flex items-center justify-center hover:bg-s3 transition-colors"
+            className="absolute -bottom-2 -right-2 w-8 h-8 rounded-full bg-s1 border-2 border-hl flex items-center justify-center hover:bg-s2 hover:border-accent hover:text-accent transition-all shadow-sm"
           >
-            <Camera size={11} className="text-ink-subtle" />
+            <Camera size={14} className="text-ink-subtle" />
           </Link>
         </div>
 
-        <div>
-          <h1 className="text-headline text-ink mb-0.5">{profile?.fullName}</h1>
+        <div className="relative z-10">
+          <h1 className="text-3xl font-bold text-ink mb-1 tracking-tight">{profile?.fullName}</h1>
           {profile?.position && (
-            <p className="text-caption text-ink-tertiary">{profile.position}</p>
+            <p className="text-body text-ink-subtle">{profile.position}</p>
           )}
         </div>
       </motion.div>
@@ -142,7 +146,7 @@ export default function DashboardPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.15 }}
           >
-            <Card>
+            <Card className="bg-s1/50 backdrop-blur-md border border-hl/50">
               <CardHeader className="pb-2">
                 <CardTitle className="eyebrow text-ink-subtle">Прогресс</CardTitle>
               </CardHeader>
@@ -164,6 +168,22 @@ export default function DashboardPage() {
           </motion.div>
         </div>
       </div>
+
+      {/* Leaderboard Section */}
+      <motion.div
+        className="mt-12"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-2xl font-semibold text-ink tracking-tight">{t('leaderboard.title')}</h2>
+          <Badge variant="default" className="bg-s2 text-ink-subtle border border-hl">Топ участников</Badge>
+        </div>
+        <div className="rounded-2xl border border-hl/50 shadow-sm overflow-hidden bg-s1">
+          <Leaderboard entries={leaderboard} />
+        </div>
+      </motion.div>
     </Layout>
   )
 }

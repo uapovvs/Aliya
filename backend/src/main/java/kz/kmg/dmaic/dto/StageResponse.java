@@ -2,6 +2,7 @@ package kz.kmg.dmaic.dto;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 public record StageResponse(
@@ -14,5 +15,9 @@ public record StageResponse(
         LocalDate deadline,
         LocalDateTime submittedAt,
         LocalDateTime reviewedAt,
-        int barrels
+        int barrels,
+        List<StageFileDto> files,
+        Long ownerId,
+        String ownerFullName
 ) {}
+

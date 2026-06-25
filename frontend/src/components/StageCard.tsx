@@ -42,12 +42,13 @@ export default function StageCard({ stage, index = 0 }: Props) {
       transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1], delay: index * 0.07 }}
       whileHover={{ y: -1 }}
     >
-      <Card className="group hover:bg-s2 hover:border-hl-strong transition-colors duration-150 p-6">
-        <CardContent className="p-0">
-          <div className="flex items-center gap-4">
+      <Card className="group bg-s1/40 hover:bg-s1/80 backdrop-blur-sm border-hl/50 hover:border-accent/40 transition-all duration-300 p-6 shadow-sm hover:shadow-md relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+        <CardContent className="p-0 relative z-10">
+          <div className="flex items-center gap-5">
             {/* Stage letter badge — double-bezel */}
-            <div className="shrink-0 w-11 h-11 rounded-lg bg-s2 border border-hl-strong flex items-center justify-center ring-1 ring-hl/40 ring-offset-1 ring-offset-s1">
-              <span className="text-sm font-semibold text-ink-subtle leading-none">{meta.letter}</span>
+            <div className="shrink-0 w-14 h-14 rounded-2xl bg-gradient-to-br from-s2 to-s1 border border-hl/80 shadow-inner flex items-center justify-center group-hover:border-accent/50 group-hover:shadow-[0_0_15px_rgba(91,141,238,0.15)] transition-all duration-300">
+              <span className="text-lg font-bold bg-clip-text text-transparent bg-gradient-to-br from-ink to-ink-subtle">{meta.letter}</span>
             </div>
 
             <div className="flex-1 min-w-0">
@@ -71,11 +72,19 @@ export default function StageCard({ stage, index = 0 }: Props) {
 
             <div className="shrink-0 flex items-center gap-4">
               {stage.adminScore !== null && (
-                <div className="text-right">
-                  <div className="text-xl font-semibold text-ink" style={{ letterSpacing: '-0.02em' }}>
+                <div className="text-right flex flex-col items-end">
+                  <div 
+                    className={`text-xl font-bold transition-all duration-300 ${stage.adminScore >= 80 ? 'text-accent drop-shadow-[0_0_8px_rgba(91,141,238,0.4)]' : 'text-ink'}`} 
+                    style={{ letterSpacing: '-0.02em' }}
+                  >
                     {stage.adminScore}%
                   </div>
-                  <div className="barrel text-xs w-7 h-7 mt-1">{stage.barrels}</div>
+                  <div className="relative w-8 h-8 mt-1 flex items-center justify-center">
+                    <div className={`absolute inset-0 rounded-full blur-md ${Number(stage.barrels) >= 5 ? 'bg-accent/30' : 'bg-ink/5'}`}></div>
+                    <span className={`relative z-10 text-base font-bold ${Number(stage.barrels) >= 5 ? 'text-accent drop-shadow-[0_0_8px_rgba(91,141,238,0.8)]' : 'text-ink'}`}>
+                      {stage.barrels}
+                    </span>
+                  </div>
                 </div>
               )}
               <Link
